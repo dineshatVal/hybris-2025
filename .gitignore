@@ -1,0 +1,52 @@
+# Ignore compiled class files
+**/*.class
+
+# Ignore generated source files
+**/gensrc/
+**/generated/
+
+# Ignore build-related directories
+**/target/
+**/classes/
+**/test-classes/
+**/build/
+
+# Ignore test-related files
+**/*_test.xml
+**/testsrc/
+**/testclasses/
+
+# Ignore temporary and backup files
+**/*.tmp
+**/*.bak
+**/*.swp
+**/*~
+**/*.log
+
+# Ignore configuration files
+**/local.properties
+**/localextensions.xml.bak
+
+# Ignore IDE and editor files
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Ignore Eclipse/IntelliJ project-specific files
+.classpath
+.project
+.settings/
+*.launch
+
+# Ignore Maven/Gradle build artifacts
+**/dependency-reduced-pom.xml
+**/*.jar
+**/*.war
+**/*.ear
