@@ -1,0 +1,11 @@
+#Ant properties
+#Thu Dec 01 11:20:50 CET 2022
+version.api=2205
+vendor=hybris
+group.id=de.hybris.platform
+name=myextension
+description=myextension
+builddate=20221201 1120
+releasedate=20220601 2009
+version=2205.7
+module.name=platform-module

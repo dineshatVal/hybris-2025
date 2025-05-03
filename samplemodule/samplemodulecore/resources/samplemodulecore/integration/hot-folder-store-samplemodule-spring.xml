@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:file="http://www.springframework.org/schema/integration/file"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration
+		http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/integration/file
+		http://www.springframework.org/schema/integration/file/spring-integration-file.xsd
+		http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+		
+    <context:annotation-config/> 
+
+	<bean id="baseDirectorySampleModule" class="java.lang.String">
+		<constructor-arg value="#{baseDirectory}/${tenantId}/samplemodule" />
+	</bean>
+	<!-- 1) Scan for files -->
+	<file:inbound-channel-adapter id="batchFilesSampleModule" directory="#{baseDirectorySampleModule}"
+		filename-regex="^(.*)-(\d+)\.csv" comparator="fileOrderComparator">
+		<int:poller fixed-rate="1000" />
+	</file:inbound-channel-adapter>
+
+	<!-- 2) move the file to processing and setup header -->
+	<file:outbound-gateway request-channel="batchFilesSampleModule" reply-channel="batchFilesSampleModuleProc"
+		directory="#{baseDirectorySampleModule}/processing" delete-source-files="true" />
+	<int:service-activator input-channel="batchFilesSampleModuleProc" output-channel="batchFilesHeaderInit"
+		ref="samplemoduleHeaderSetupTask" method="execute" />
+	<bean id="samplemoduleHeaderSetupTask" class="de.hybris.platform.acceleratorservices.dataimport.batch.task.HeaderSetupTask">
+		<property name="catalog" value="electronicsProductCatalog" />
+		<property name="net" value="false" />
+		<property name="storeBaseDirectory" ref="baseDirectorySampleModule" />
+	</bean>
+
+	<!--<bean id="defaultImpexProductHeader" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				# ImpEx for importing products
+				$catalogVersion=catalogVersion(catalog(id[default='electronics']),version[default='Staged'])[unique=true]
+				$approved=approvalstatus(code)[default='check']
+				$lang=en
+			</value>
+		</constructor-arg>
+	</bean>-->
+
+	<bean id="samplemoduleProductConverterMapping" class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping">
+		<property name="mapping" value="product"/>
+		<property name="converter" ref="samplemoduleProductConverter"/>
+	</bean>
+
+	<bean id="samplemoduleProductConverter" class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexConverter">
+		<property name="header">
+			<value>
+				INSERT_UPDATE Product; code[unique = true]; catalogVersion(catalog(id), version); name[lang = en]; expressdeliveryeligibility
+			</value>
+		</property>
+		<property name="impexRow">
+			<value>;{+0};{1};{2};{3}</value>
+		</property>
+		<property name="type" value="Product"/>
+	</bean>
+
+
+</beans>

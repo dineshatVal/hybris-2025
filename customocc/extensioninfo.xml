@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+ Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved.
+--><extensioninfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="extensioninfo.xsd">
+        	
+    
+    <extension abstractclassprefix="Generated" classprefix="Customocc" description="customocc extension" jaloLogicFree="true" managername="CustomoccManager" managersuperclass="de.hybris.platform.jalo.extension.Extension" name="customocc">
+                		
+        
+        <!-- you should add all required extensions to this list, except platform extensions which are automatically required -->
+                		
+        
+        <requires-extension name="commercewebservices"/>
+        <requires-extension name="samplemodulefacades"/>
+        <requires-extension name="samplemodulecore"/>
+        <requires-extension name="webservicescommons"/>
+
+        <requires-extension name="commercefacades"/>
+        <requires-extension name="platformservices"/>
+
+        
+        <coremodule generated="true" manager="com.custom.occ.jalo.CustomoccManager" packageroot="com.custom.occ"/>
+                		
+        
+        	
+    
+    </extension>
+        
+
+</extensioninfo>
