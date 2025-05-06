@@ -213,9 +213,9 @@
 		</property>
 	</bean>
 
-<!--
-	<bean id="customProductDao" class="com.sample.module.core.product.dao.impl.DefaultProductDao" />
--->
+	<bean id="customCustomerLocPopulator" class="com.sample.module.facades.populators.CustomCustomerLocPopulator">
+		<property name="commonI18NService" ref="commonI18NService"/>
+	</bean>
 
 
 

@@ -5,7 +5,10 @@ package com.custom.occ.controllers;
 
 import com.sample.module.core.dto.CustomerDTO;
 import com.sample.module.core.dto.ProductDTO;
+import com.sample.module.core.model.CustomCustomerLocModel;
+import com.sample.module.facades.CustomCustomerLocFacade;
 import com.sample.module.facades.CustomFacade;
+import com.sample.module.facades.customcustomerloc.data.CustomCustomLocData;
 import de.hybris.platform.commerceservices.request.mapping.annotation.ApiVersion;
 import io.swagger.annotations.Api;
 import org.slf4j.Logger;
@@ -13,10 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,6 +30,9 @@ public class CustomoccController
 
     @Autowired
     private CustomFacade customFacade;
+
+    @Autowired
+    private CustomCustomerLocFacade customCustomerLocFacade;
 
     @GetMapping("/hello")
     public ResponseEntity<String> sayHello() {
@@ -91,5 +94,10 @@ public class CustomoccController
             LOG.error("Error fetching products for catalogId: {} and catalogVersion: {}", catalogId, catalogVersion, e);
             return ResponseEntity.status(500).build();
         }
+    }
+
+    @PostMapping("/addCustomerLoc")
+    public ResponseEntity<String> createCustomCustomerLoc(@RequestBody CustomCustomLocData data) {
+        return ResponseEntity.ok(customCustomerLocFacade.registerLocation(data));
     }
 }

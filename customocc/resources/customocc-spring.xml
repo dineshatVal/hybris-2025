@@ -16,6 +16,8 @@
     <context:annotation-config/>
 
 	<bean id="customFacade" class="com.sample.module.facades.impl.DefaultCustomFacade"/>
+	<bean id="customCustomerFacade" class="com.sample.module.facades.impl.DefaultCustomCustomerLocFacade"/>
+
 
 
 </beans>
