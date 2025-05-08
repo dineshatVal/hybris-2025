@@ -17,4 +17,16 @@
 	</bean>
 	-->
 
+	<!-- Commenting since using CustomProductWsDTO -->
+	<!--<bean class="de.hybris.platform.commercewebservicescommons.dto.product.ProductWsDTO">
+		<property name="expressDeliveryEligibility" type="boolean"/>
+	</bean>-->
+
+	<bean class="com.custom.occ.dto.CustomProductWsDTO">
+		<property name="code" type="String"/>
+		<property name="name" type="String"/>
+		<property name="description" type="String"/>
+		<property name="expressDeliveryEligibility" type="boolean"/>
+	</bean>
+
 </beans>

@@ -6,7 +6,11 @@ import com.sample.module.core.dto.ProductDTO;
 import com.sample.module.core.model.CustomCustomerLocModel;
 import com.sample.module.core.product.ProductModelService;
 import com.sample.module.facades.CustomFacade;
+import de.hybris.platform.commercefacades.product.data.CategoryData;
 import de.hybris.platform.commercefacades.product.data.ProductData;
+import de.hybris.platform.commercefacades.search.ProductSearchFacade;
+import de.hybris.platform.commercefacades.search.data.SearchStateData;
+import de.hybris.platform.commerceservices.search.facetdata.ProductCategorySearchPageData;
 import de.hybris.platform.core.model.product.ProductModel;
 import de.hybris.platform.core.model.user.CustomerModel;
 import org.apache.commons.lang3.tuple.Pair;
@@ -26,6 +30,9 @@ public class DefaultCustomFacade implements CustomFacade {
     private ProductModelService productModelService;
 
     @Autowired
+    private ProductSearchFacade<ProductData> productSearchFacade;
+
+    @Autowired
     private CustomerModelService customerModelService;
 
     @Resource(name = "productConverter")
@@ -38,12 +45,12 @@ public class DefaultCustomFacade implements CustomFacade {
     @Qualifier("productDTOConverter")
     private Converter<ProductModel, ProductDTO> productDTOConverter;
 
-    @Override
+    /*@Override
     public ProductDTO getProductByCode(String code, CustomerDTO customerDTO) {
         ProductModel productModel = productModelService.getProductByCode(code);
         ProductDTO productDTOConverted = productDTOConverter.convert(productModel);
         return productModelService.setExpressDeliveryEligibility(productDTOConverted,customerDTO);
-    }
+    }*/
 
     @Override
     public CustomerDTO getCustomerByEmail(String email) {
@@ -54,36 +61,42 @@ public class DefaultCustomFacade implements CustomFacade {
         return customerDTO;
     }
 
-    @Override
+    /*@Override
     public List<ProductDTO> getProductsForCatalog(String catalogId, String catalogVersion, CustomerDTO customerDTO) {
         List<ProductModel> products = productModelService.getProductsForCatalog(catalogId, catalogVersion);
         List<ProductDTO> productDTOList = products.stream()
                 .map(productDTOConverter::convert)
                 .collect(Collectors.toList());
         return productModelService.setExpressDeliveryEligibilityPLP(productDTOList,customerDTO);
-    }
+    }*/
 
     @Override
-    public ProductDTO getProductByCodeCus(String productCode, CustomerDTO customerDTO) {
+    public ProductData getProductByCodeCus(String productCode, CustomerDTO customerDTO) {
         ProductModel productByCode = productModelService.getProductByCode(productCode);
         ProductData productData = productConverter.convert(productByCode);
-        ProductDTO productDTO = productCusDTOConverter.convert(productData);
-        return productModelService.setExpressDeliveryEligibility(productDTO,customerDTO);
 
-       // return productDTO;
+        ProductData productDataConverted = productModelService.setExpressDeliveryEligibility(productData, customerDTO);
+        return productDataConverted;
     }
 
     @Override
-    public List<ProductDTO> getProductsForCatalogCus(String catalogId, String catalogVersion, CustomerDTO customerDTO) {
+    public List<ProductData> getProductsForCatalogCus(String catalogId, String catalogVersion, CustomerDTO customerDTO) {
         List<ProductModel> products = productModelService.getProductsForCatalog(catalogId, catalogVersion);
-        List<ProductData> productDTOList = products.stream()
+        List<ProductData> productDataList = products.stream()
                 .map(productConverter::convert)
                 .collect(Collectors.toList());
-        List<ProductDTO> productDTOS = productDTOList.stream()
-                .map(productCusDTOConverter::convert)
-                .collect(Collectors.toList());
-        return productModelService.setExpressDeliveryEligibilityPLP(productDTOS,customerDTO);
 
-        //return productDTOS;
+        List<ProductData> productDataLis = productModelService.setExpressDeliveryEligibilityPLP(productDataList, customerDTO);
+        return productDataLis;
+    }
+
+    @Override
+    public List<ProductData> getProductsForCategory(String categoryCode, CustomerDTO customerDTO) {
+        ProductCategorySearchPageData<SearchStateData, ProductData, CategoryData> res =productSearchFacade.categorySearch(categoryCode);
+        List<ProductData> productList = res.getResults();
+
+        List<ProductData> productDataLis = productModelService.setExpressDeliveryEligibilityPLP(productList, customerDTO);
+
+        return productDataLis;
     }
 }

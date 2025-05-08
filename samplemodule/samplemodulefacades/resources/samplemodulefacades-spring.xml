@@ -213,10 +213,19 @@
 		</property>
 	</bean>
 
+	<!-- To add new CustomCustomerLoc START -->
 	<bean id="customCustomerLocPopulator" class="com.sample.module.facades.populators.CustomCustomerLocPopulator">
 		<property name="commonI18NService" ref="commonI18NService"/>
 	</bean>
+	<!-- To add new CustomCustomerLoc END -->
 
+	<!-- To populate express delivery value in Solr result ProductData START -->
+	<bean id="solrProductExpressDeliveryPopulator" class="com.sample.module.facades.populators.SearchResultExpressDeliveryEligibilityPopulator"/>
 
+	<bean parent="modifyPopulatorList">
+		<property name="list" ref="commerceSearchResultProductConverter"/>
+		<property name="add" ref="solrProductExpressDeliveryPopulator"/>
+	</bean>
+	<!-- To populate express delivery value in Solr result ProductData END -->
 
 </beans>

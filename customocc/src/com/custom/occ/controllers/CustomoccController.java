@@ -3,13 +3,14 @@
  */
 package com.custom.occ.controllers;
 
+import com.custom.occ.dto.CustomProductWsDTO;
 import com.sample.module.core.dto.CustomerDTO;
-import com.sample.module.core.dto.ProductDTO;
-import com.sample.module.core.model.CustomCustomerLocModel;
 import com.sample.module.facades.CustomCustomerLocFacade;
 import com.sample.module.facades.CustomFacade;
 import com.sample.module.facades.customcustomerloc.data.CustomCustomLocData;
+import de.hybris.platform.commercefacades.product.data.ProductData;
 import de.hybris.platform.commerceservices.request.mapping.annotation.ApiVersion;
+import de.hybris.platform.webservicescommons.mapping.DataMapper;
 import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @Controller
@@ -34,12 +36,15 @@ public class CustomoccController
     @Autowired
     private CustomCustomerLocFacade customCustomerLocFacade;
 
+    @Resource(name = "dataMapper")
+    private DataMapper dataMapper;
+
     @GetMapping("/hello")
     public ResponseEntity<String> sayHello() {
         return ResponseEntity.ok("Hello from my first OCC extension!");
     }
 
-    @Deprecated
+    /*@Deprecated
     @GetMapping("/{productCode}")
     public ResponseEntity<ProductDTO> getProductByCode(@PathVariable String productCode, @RequestParam String email) {
         CustomerDTO customerDTO = customFacade.getCustomerByEmail(email);
@@ -47,9 +52,9 @@ public class CustomoccController
         ProductDTO finalProductDTO = customFacade.getProductByCode(productCode, customerDTO);
 
         return ResponseEntity.ok(finalProductDTO);
-    }
+    }*/
 
-    @Deprecated
+    /*@Deprecated
     @GetMapping("/products")
     public ResponseEntity<List<ProductDTO>> getProductsForCatalog(@RequestParam String catalogId,
                         @RequestParam String catalogVersion, @RequestParam String email) {
@@ -67,31 +72,59 @@ public class CustomoccController
             LOG.error("Error fetching products for catalogId: {} and catalogVersion: {}", catalogId, catalogVersion, e);
             return ResponseEntity.status(500).build();
         }
-    }
+    }*/
 
-    @GetMapping("/new/{productCode}")
-    public ResponseEntity<ProductDTO> getProductByCodeCus(@PathVariable String productCode, @RequestParam String email) {
+    @GetMapping("/{productCode}")
+    public ResponseEntity<CustomProductWsDTO> getProductByCodeCus(@PathVariable String productCode, @RequestParam String email) {
         CustomerDTO customerDTO = customFacade.getCustomerByEmail(email);
 
-        ProductDTO productByCodeCus = customFacade.getProductByCodeCus(productCode, customerDTO);
-        return ResponseEntity.ok(productByCodeCus);
+        ProductData productByCodeCus = customFacade.getProductByCodeCus(productCode, customerDTO);
+        CustomProductWsDTO customProductWsDTO = dataMapper.map(productByCodeCus, CustomProductWsDTO.class);
+        return ResponseEntity.ok(customProductWsDTO);
     }
 
-    @GetMapping("/new/products")
-    public ResponseEntity<List<ProductDTO>> getProductsForCatalogCus(@RequestParam String catalogId,
+    @GetMapping("/catalog-products")
+    public ResponseEntity<List<CustomProductWsDTO>> getProductsForCatalogCus(@RequestParam String catalogId,
                                                                   @RequestParam String catalogVersion, @RequestParam String email) {
         CustomerDTO customerDTO = customFacade.getCustomerByEmail(email);
 
         try {
-            List<ProductDTO> productsForCatalog = customFacade.getProductsForCatalogCus(catalogId, catalogVersion, customerDTO);
-
+            List<CustomProductWsDTO> customProductWsDTOList =  new java.util.ArrayList<>();
+            List<ProductData> productsForCatalog = customFacade.getProductsForCatalogCus(catalogId, catalogVersion, customerDTO);
+            for (ProductData productData : productsForCatalog) {
+                CustomProductWsDTO customProductWsDTO = dataMapper.map(productData, CustomProductWsDTO.class);
+                customProductWsDTOList.add(customProductWsDTO);
+            }
             if (productsForCatalog == null || productsForCatalog.isEmpty()) {
                 LOG.warn("No products found for catalogId: {} and catalogVersion: {}", catalogId, catalogVersion);
                 return ResponseEntity.noContent().build();
             }
-            return ResponseEntity.ok(productsForCatalog);
+            return ResponseEntity.ok(customProductWsDTOList);
         } catch (Exception e) {
             LOG.error("Error fetching products for catalogId: {} and catalogVersion: {}", catalogId, catalogVersion, e);
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    @GetMapping("/category-products")
+    public ResponseEntity<List<CustomProductWsDTO>> getProductsForCategory(@RequestParam String categoryCode,
+                                                                       @RequestParam String email) {
+        CustomerDTO customerDTO = customFacade.getCustomerByEmail(email);
+
+        try {
+            List<CustomProductWsDTO> customProductWsDTOList =  new java.util.ArrayList<>();
+            List<ProductData> productDataList = customFacade.getProductsForCategory(categoryCode, customerDTO);
+            for (ProductData productData : productDataList) {
+                CustomProductWsDTO productWsDTO = dataMapper.map(productData, CustomProductWsDTO.class);
+                customProductWsDTOList.add(productWsDTO);
+            }
+            if (productDataList == null || productDataList.isEmpty()) {
+                LOG.warn("No products found");
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(customProductWsDTOList);
+        } catch (Exception e) {
+            LOG.error("Error fetching products for categorycode: ", e);
             return ResponseEntity.status(500).build();
         }
     }

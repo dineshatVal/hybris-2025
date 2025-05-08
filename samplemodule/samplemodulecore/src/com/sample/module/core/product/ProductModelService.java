@@ -2,14 +2,15 @@ package com.sample.module.core.product;
 
 import com.sample.module.core.dto.CustomerDTO;
 import com.sample.module.core.dto.ProductDTO;
+import de.hybris.platform.commercefacades.product.data.ProductData;
 import de.hybris.platform.core.model.product.ProductModel;
 
 import java.util.List;
 
 public interface ProductModelService {
     ProductModel getProductByCode(String code);
-    ProductDTO setExpressDeliveryEligibility(ProductDTO productDTO, CustomerDTO customerDTO);
+    ProductData setExpressDeliveryEligibility(ProductData productData, CustomerDTO customerDTO);
     List<ProductModel> getProductsForCatalog(String catalogId, String catalogVersion);
-    List<ProductDTO> setExpressDeliveryEligibilityPLP(List<ProductDTO> productDTOList, CustomerDTO customerDTO);
+    List<ProductData> setExpressDeliveryEligibilityPLP(List<ProductData> productDataList, CustomerDTO customerDTO);
 
 }

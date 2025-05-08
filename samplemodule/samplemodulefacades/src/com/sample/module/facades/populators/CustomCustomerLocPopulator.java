@@ -17,11 +17,9 @@ public class CustomCustomerLocPopulator implements Populator<CustomCustomLocData
         //target.setUid(source.getUid());
         target.setExpressDelivery(source.isExpressDelivery());
 
-        // Set country by isocode
         CountryModel country = commonI18NService.getCountry(source.getCountryIsoCode());
         target.setCountry(country);
 
-        // Set region by isocodeShort within the country
         if (country != null && source.getRegionIsoCodeShort() != null) {
             for (RegionModel region : country.getRegions()) {
                 if (region.getIsocodeShort().equalsIgnoreCase(source.getRegionIsoCodeShort())) {

@@ -4,6 +4,7 @@ import com.sample.module.core.dto.CustomerDTO;
 import com.sample.module.core.dto.ProductDTO;
 import com.sample.module.core.product.ProductModelService;
 import com.sample.module.core.product.dao.ProductDao;
+import de.hybris.platform.commercefacades.product.data.ProductData;
 import de.hybris.platform.core.model.product.ProductModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,35 +34,35 @@ public class DefaultProductModelService implements ProductModelService {
     }
 
     @Override
-    public List<ProductDTO> setExpressDeliveryEligibilityPLP(List<ProductDTO> productDTOList, CustomerDTO customerDTO) {
-        List<ProductDTO> finalProductDTOList = new ArrayList<>();
-        for (ProductDTO productDTO : productDTOList) {
-            if (productDTO != null && customerDTO != null) {
+    public List<ProductData> setExpressDeliveryEligibilityPLP(List<ProductData> productDataList, CustomerDTO customerDTO) {
+        List<ProductData> finalProductDataList = new ArrayList<>();
+        for (ProductData productData : productDataList) {
+            if (productData != null && customerDTO != null) {
                 if (customerDTO.isExpressDelivery()) {
-                    finalProductDTOList.add(productDTO);
+                    finalProductDataList.add(productData);
                 } else {
-                    productDTO.setExpressDeliveryEligibility(false);
-                    finalProductDTOList.add(productDTO);
+                    productData.setExpressDeliveryEligibility(false);
+                    finalProductDataList.add(productData);
                 }
             } else {
                 LOG.warn("Product or Customer DTO is null");
             }
 
         }
-        return finalProductDTOList;
+        return finalProductDataList;
     }
 
     @Override
-    public ProductDTO setExpressDeliveryEligibility(ProductDTO productDTO, CustomerDTO customerDTO) {
-        if (productDTO != null && customerDTO != null) {
+    public ProductData setExpressDeliveryEligibility(ProductData productData, CustomerDTO customerDTO) {
+        if (productData != null && customerDTO != null) {
             if (customerDTO.isExpressDelivery()) {
-                return productDTO;
+                return productData;
             } else {
-                productDTO.setExpressDeliveryEligibility(false);
+                productData.setExpressDeliveryEligibility(false);
             }
         } else {
             LOG.warn("Product or Customer DTO is null");
         }
-        return productDTO;
+        return productData;
     }
 }
