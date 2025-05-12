@@ -18,6 +18,8 @@
 	<bean id="customFacade" class="com.sample.module.facades.impl.DefaultCustomFacade"/>
 	<bean id="customCustomerFacade" class="com.sample.module.facades.impl.DefaultCustomCustomerLocFacade"/>
 
+	<bean id="digitalFacade" class="com.sample.module.facades.impl.DefaultDigitalFacade"/>
+
 
 
 </beans>

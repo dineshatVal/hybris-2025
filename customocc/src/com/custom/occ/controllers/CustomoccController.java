@@ -133,4 +133,9 @@ public class CustomoccController
     public ResponseEntity<String> createCustomCustomerLoc(@RequestBody CustomCustomLocData data) {
         return ResponseEntity.ok(customCustomerLocFacade.registerLocation(data));
     }
+
+    @PostMapping("/updateProductExpFlagV1")
+    public ResponseEntity<String> updateProductExpFlagV1(@RequestBody CustomProductWsDTO data) {
+        return ResponseEntity.ok(customFacade.updateExistingProduct(data));
+    }
 }

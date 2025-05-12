@@ -1,0 +1,49 @@
+# Macros for the New Content Catalog
+$contentCatalog=CustomContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+
+# 1. Create Content Catalog
+INSERT_UPDATE Catalog; id[unique=true]; name[lang=en]
+ ; $contentCatalog; Custom Content Catalog
+
+# 2. Create Catalog Versions (Staged and Online)
+INSERT_UPDATE CatalogVersion; catalog(id)[unique=true]; version[unique=true]; active
+; $contentCatalog; Staged; false
+INSERT_UPDATE CatalogVersion; catalog(id)[unique=true]; version[unique=true]; active
+; $contentCatalog; Online; true
+
+# 3. Create Custom Page Template
+INSERT_UPDATE PageTemplate; $contentCV; uid[unique=true]; name; frontendTemplateName; restrictedPageTypes(code); active 
+; ; CustomLandingPageTemplate; Custom Landing Page Template; custom-landing-page; ContentPage; true
+
+# 4. Create Content Slots for the Template
+INSERT_UPDATE ContentSlotName; name[unique=true]; validComponentTypes(code); template(uid)[default=CustomLandingPageTemplate] 
+; HeaderSlot; ; 
+; HeroSlot; ; 
+; BodySlot; ; 
+; FooterSlot; ; 
+
+# 5. Create Content Page
+INSERT_UPDATE ContentPage; $contentCV; uid[unique=true]; name; masterTemplate(uid); label; defaultPage; approvalStatus(code)[default='approved']; homepage 
+; ; CustomLandingPage; Custom Landing Page; CustomLandingPageTemplate; /custom-landing; true; ; false
+
+# 6. Create Content Slots
+INSERT_UPDATE ContentSlot; $contentCV; uid[unique=true]; name; active
+; ; HeaderSlot_CustomLanding; Header Slot; true
+; ; HeroSlot_CustomLanding; Hero Slot; true
+; ; BodySlot_CustomLanding; Body Slot; true
+; ; FooterSlot_CustomLanding; Footer Slot; true
+
+# 7. Link Content Slots to Page Template
+INSERT_UPDATE ContentSlotForTemplate; $contentCV; uid[unique=true]; position[unique=true]; pageTemplate(uid)[unique=true][default='CustomLandingPageTemplate']; contentSlot(uid)[unique=true] 
+; ; HeaderSlot_CustomLandingPageTemplate; HeaderSlot; ; HeaderSlot_CustomLanding 
+; ; HeroSlot_CustomLandingPageTemplate; HeroSlot; ; HeroSlot_CustomLanding 
+; ; BodySlot_CustomLandingPageTemplate; BodySlot; ; BodySlot_CustomLanding 
+; ; FooterSlot_CustomLandingPageTemplate; FooterSlot; ; FooterSlot_CustomLanding
+
+# 8. Link Content Slots to Content Page
+INSERT_UPDATE ContentSlotForPage; $contentCV; uid[unique=true]; position[unique=true]; page(uid)[unique=true][default='CustomLandingPage']; contentSlot(uid)[unique=true] 
+; ; HeaderSlot_CustomLandingPage; HeaderSlot; ; HeaderSlot_CustomLanding 
+; ; HeroSlot_CustomLandingPage; HeroSlot; ; HeroSlot_CustomLanding 
+; ; BodySlot_CustomLandingPage; BodySlot; ; BodySlot_CustomLanding 
+; ; FooterSlot_CustomLandingPage; FooterSlot; ; FooterSlot_CustomLanding

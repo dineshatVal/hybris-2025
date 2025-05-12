@@ -2,12 +2,14 @@ package com.sample.module.core.product.impl;
 
 import com.sample.module.core.dto.CustomerDTO;
 import com.sample.module.core.dto.ProductDTO;
+import com.sample.module.core.model.DownloadUrlPropsModel;
 import com.sample.module.core.product.ProductModelService;
 import com.sample.module.core.product.dao.ProductDao;
 import de.hybris.platform.commercefacades.product.data.ProductData;
 import de.hybris.platform.core.model.product.ProductModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -21,6 +23,8 @@ public class DefaultProductModelService implements ProductModelService {
 
     @Resource(name = "customProductDao")
     private ProductDao customProductDao;
+    @Autowired
+    private ProductDao productDao;
 
 
     @Override
@@ -50,6 +54,11 @@ public class DefaultProductModelService implements ProductModelService {
 
         }
         return finalProductDataList;
+    }
+
+    @Override
+    public DownloadUrlPropsModel getDownloadUrlPropsModel(String token) {
+        return productDao.getDownloadUrlPropsModel(token);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.sample.module.core.product.dao.impl;
 
+import com.sample.module.core.model.DownloadUrlPropsModel;
 import com.sample.module.core.product.dao.ProductDao;
 import de.hybris.platform.catalog.CatalogVersionService;
 import de.hybris.platform.catalog.model.CatalogVersionModel;
@@ -36,5 +37,14 @@ public class DefaultProductDao implements ProductDao {
         fsq.addQueryParameter("catalogVersion", catalogVer);
         fsq.setCount(30);
         return flexibleSearchService.<ProductModel>search(fsq).getResult();
+    }
+
+    @Override
+    public DownloadUrlPropsModel getDownloadUrlPropsModel(String token) {
+        String query = "SELECT {pk} FROM {DownloadUrlProps} WHERE {downloadToken} = ?token";
+        FlexibleSearchQuery fsq = new FlexibleSearchQuery(query);
+        fsq.addQueryParameter("token", token);
+        DownloadUrlPropsModel downloadUrlPropsModel = flexibleSearchService.searchUnique(fsq);
+        return downloadUrlPropsModel;
     }
 }

@@ -228,4 +228,8 @@
 	</bean>
 	<!-- To populate express delivery value in Solr result ProductData END -->
 
+	<!-- To update product express flag START -->
+	<bean id="productUpdateExpressFlagPopulator" class="com.sample.module.facades.populators.UpdateProductFlagsPopulator"/>
+	<!-- To update product express flag END -->
+
 </beans>

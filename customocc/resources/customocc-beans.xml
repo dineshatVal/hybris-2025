@@ -26,7 +26,10 @@
 		<property name="code" type="String"/>
 		<property name="name" type="String"/>
 		<property name="description" type="String"/>
-		<property name="expressDeliveryEligibility" type="boolean"/>
+		<property name="expressDeliveryEligibility" type="Boolean"/>
+
+		<property name="isDigitalProduct" type="Boolean"/>
+		<property name="downloadUrl" type="String"/>
 	</bean>
 
 </beans>

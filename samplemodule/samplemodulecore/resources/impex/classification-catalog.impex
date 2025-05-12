@@ -1,0 +1,52 @@
+## New Catalog
+INSERT_UPDATE Catalog; id[unique = true]; name[lang = en]
+; mensWearCatalog; Mens Wear Set 
+
+## Define Catalog version
+INSERT_UPDATE CatalogVersion; catalog(id)[unique = true]; version[unique = true]; active
+; mensWearCatalog; Online; true
+INSERT_UPDATE CatalogVersion; catalog(id)[unique = true]; version[unique = true]; active
+; mensWearCatalog; Staged; false
+
+## Normal Category
+INSERT_UPDATE Category; code[unique = true]; catalogVersion(catalog(id), version); name[lang = en]
+; formalshirts; mensWearCatalog:Staged; Formal Shirts
+
+## Assigning a product to normal category (this won't have classification attributes assigned)
+INSERT_UPDATE Product; code[unique = true]; catalogVersion(catalog(id), version); name[lang = en]; supercategories(code)
+; shirt-004; mensWearCatalog:Staged; Casual Cotton Shirt 4 normal; formalshirts
+
+## Create classification system and version
+INSERT_UPDATE ClassificationSystem; id[unique = true]; name[lang = en]
+; MensWearClassSystem; Men's wear classification system
+INSERT_UPDATE ClassificationSystemVersion; catalog(id)[unique = true]; version[unique = true]
+; MensWearClassSystem; 1.0
+
+## Create classification class
+INSERT_UPDATE ClassificationClass; code[unique = true]; catalogVersion(catalog(id), version); name[lang = en]
+; FormalShirtAttributes; MensWearClassSystem:1.0; Formal Shirt Attributes
+
+## Define attributes
+INSERT_UPDATE ClassificationAttribute; code[unique = true]; name[lang = en];systemVersion(catalog(id), version)
+; fabricType; Fabric Type; MensWearClassSystem:1.0
+; sleeveLength; Sleeve Length; MensWearClassSystem:1.0
+; shoulderWidth; Shoulder Width; MensWearClassSystem:1.0
+
+#Assign attributes to classification class
+$class = classificationClass(code)[unique = true];
+$attribute = classificationAttribute(code)[unique = true];
+INSERT_UPDATE ClassAttributeAssignment; $class[unique = true]; $attribute[unique = true];
+                                      ;FormalShirtAttributes;fabricType;
+                                      ;FormalShirtAttributes;sleeveLength;
+                                      ;FormalShirtAttributes;shoulderWidth;
+
+
+## Assigning products to classificationclass category - so that attributes will be assigned to product
+INSERT_UPDATE Product; code[unique = true]; catalogVersion(catalog(id), version); name[lang = en]; supercategories(code)
+; shirt-001; mensWearCatalog:Staged; Casual Cotton Shirt; FormalShirtAttributes
+
+INSERT_UPDATE Product; code[unique = true]; catalogVersion(catalog(id), version); name[lang = en]; supercategories(code)
+; shirt-002; mensWearCatalog:Staged; Casual Cotton Shirt 1; FormalShirtAttributes
+
+INSERT_UPDATE Product; code[unique = true]; catalogVersion(catalog(id), version); name[lang = en]; supercategories(code)
+; shirt-003; mensWearCatalog:Staged; Casual Cotton Shirt 3rd; FormalShirtAttributes

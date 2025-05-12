@@ -1,0 +1,59 @@
+/*
+ * Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved.
+ */
+package com.custom.occ.controllers;
+
+import com.custom.occ.dto.CustomProductWsDTO;
+import com.sample.module.facades.DigitalFacade;
+import de.hybris.platform.commerceservices.request.mapping.annotation.ApiVersion;
+import io.swagger.annotations.Api;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+
+@Controller
+@ApiVersion("v2")
+@Api(tags = "ExpressDelivery Controller")
+@RequestMapping(value = "/{baseSiteId}")
+public class DigitalController
+{
+    private static final Logger LOG = LoggerFactory.getLogger(DigitalController.class);
+
+ /*   @Autowired
+    private CustomFacade customFacade;*/
+
+    @Resource(name = "digitalFacade")
+    private DigitalFacade digitalFacade;
+
+   /* @Resource(name = "dataMapper")
+    private DataMapper dataMapper;*/
+
+    @GetMapping("/hello-digital")
+    public ResponseEntity<String> sayHello() {
+        return ResponseEntity.ok("Hello from my digital controller!");
+    }
+
+    @PostMapping("/addUrlProps")
+    public ResponseEntity<String> addUrlProps(@RequestParam String code, @RequestParam String email) {
+        String generateDownloadToken = digitalFacade.generateDownloadLink(code, email);
+        return ResponseEntity.ok(generateDownloadToken);
+    }
+
+    @GetMapping("/getDownloadAccess")
+    public ResponseEntity<String> getDownloadAccess(@RequestParam String token) throws Exception {
+        String downloadLink = digitalFacade.getDownloadAccess(token);
+        return ResponseEntity.ok(downloadLink);
+    }
+
+    @PostMapping("/updateDigitalProduct")
+    public ResponseEntity<String> updateDigitalProduct(@RequestBody CustomProductWsDTO customProductWsDTO) throws Exception {
+        String downloadLink = digitalFacade.updateDigitalProduct(customProductWsDTO);
+        return ResponseEntity.ok(downloadLink);
+    }
+
+
+}

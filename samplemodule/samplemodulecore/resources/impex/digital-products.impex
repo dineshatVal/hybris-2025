@@ -1,0 +1,31 @@
+## Digital Catalog
+INSERT_UPDATE Catalog; id[unique = true]; name[lang = en]
+; digitalProduct; Digital Products
+
+## Define Catalog version
+INSERT_UPDATE CatalogVersion; catalog(id)[unique = true]; version[unique = true]; active
+; digitalProduct; Online; true
+INSERT_UPDATE CatalogVersion; catalog(id)[unique = true]; version[unique = true]; active
+; digitalProduct; Staged; false
+
+
+## Normal Category
+INSERT_UPDATE Category; code[unique = true]; catalogVersion(catalog(id), version); name[lang = en]
+; digital-cat; digitalProduct:Online; Super Digital X
+
+
+INSERT_UPDATE CatalogVersionSyncJob;code[unique=true];sourceVersion(catalog(id), version);targetVersion(catalog(id), version);syncPrincipals(uid)
+;digitalProduct;digitalProduct:Staged;digitalProduct:Online;admin
+
+
+# --- Digital Product 1: eBook ---
+INSERT_UPDATE Product; code[unique = true]; name[lang = en]; catalogVersion(catalog(id), version); downloadurl; isdigitalproduct; supercategories(code)
+; ebook-001 ; Learn impex in 24 Hours ; digitalProduct:Online ; https://digitalsource.s3.us-west-2.amazonaws.com/Impex-bkp.txt ; true ; digital-cat
+
+# --- Digital Product 2: Music File ---
+INSERT_UPDATE Product; code[unique = true]; name[lang = en]; catalogVersion(catalog(id), version); downloadurl; isdigitalproduct; supercategories(code)
+; music-001 ; Ambient Soundtrack Vol.1 ; digitalProduct:Online ; https://cdn.mysite.com/downloads/ambient.mp3 ; true ; digital-category
+
+# --- Digital Product 3: Software ---
+INSERT_UPDATE Product; code[unique = true]; name[lang = en]; catalogVersion(catalog(id), version); downloadurl; isdigitalproduct; supercategories(code)
+; software-001 ; Photo Editor Pro ; digitalProduct:Staged ; https://cdn.mysite.com/downloads/photo-editor.zip ; true ; digital-category

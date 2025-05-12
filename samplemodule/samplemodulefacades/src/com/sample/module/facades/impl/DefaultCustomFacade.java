@@ -1,5 +1,6 @@
 package com.sample.module.facades.impl;
 
+import com.custom.occ.dto.CustomProductWsDTO;
 import com.sample.module.core.customer.CustomerModelService;
 import com.sample.module.core.dto.CustomerDTO;
 import com.sample.module.core.dto.ProductDTO;
@@ -11,8 +12,10 @@ import de.hybris.platform.commercefacades.product.data.ProductData;
 import de.hybris.platform.commercefacades.search.ProductSearchFacade;
 import de.hybris.platform.commercefacades.search.data.SearchStateData;
 import de.hybris.platform.commerceservices.search.facetdata.ProductCategorySearchPageData;
+import de.hybris.platform.converters.Populator;
 import de.hybris.platform.core.model.product.ProductModel;
 import de.hybris.platform.core.model.user.CustomerModel;
+import de.hybris.platform.servicelayer.model.ModelService;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -44,6 +47,12 @@ public class DefaultCustomFacade implements CustomFacade {
     @Autowired
     @Qualifier("productDTOConverter")
     private Converter<ProductModel, ProductDTO> productDTOConverter;
+
+    @Resource(name = "modelService")
+    private ModelService modelService;
+
+    @Resource(name = "productUpdateExpressFlagPopulator")
+    private Populator<CustomProductWsDTO, ProductModel> productUpdateExpressFlagPopulator;
 
     /*@Override
     public ProductDTO getProductByCode(String code, CustomerDTO customerDTO) {
@@ -98,5 +107,21 @@ public class DefaultCustomFacade implements CustomFacade {
         List<ProductData> productDataLis = productModelService.setExpressDeliveryEligibilityPLP(productList, customerDTO);
 
         return productDataLis;
+    }
+
+    /*@Override
+    public String updateProductFromScratch(ProductData data) {
+        ProductModel model = modelService.create(ProductModel.class);
+        productUpdateExpressFlagPopulator.populate(data, model);
+        modelService.save(model);
+        return model.getCode();
+    }*/
+
+    @Override
+    public String updateExistingProduct(CustomProductWsDTO data) {
+        ProductModel model = productModelService.getProductByCode(data.getCode());
+        productUpdateExpressFlagPopulator.populate(data, model);
+        modelService.save(model);
+        return model.getCode();
     }
 }

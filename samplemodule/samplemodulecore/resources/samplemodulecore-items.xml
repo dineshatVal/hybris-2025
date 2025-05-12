@@ -215,5 +215,43 @@
 
         </typegroup>
 
+        <typegroup name="DigitalProductSection">
+            <itemtype code="Product" autocreate="false" generate="false">
+                <attributes>
+                    <attribute qualifier="isDigitalProduct" type="java.lang.Boolean">
+                        <modifiers read="true" write="true" search="true" optional="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="downloadUrl" type="java.lang.String">
+                        <modifiers read="true" write="true" search="true" optional="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+
+            <itemtype code="DownloadUrlProps" autocreate="true" generate="true">
+                <deployment table="DownloadUrlProps" typecode="20004"/>
+                <attributes>
+                    <attribute qualifier="downloadToken" type="java.lang.String">
+                        <modifiers read="true" write="true" search="true" unique="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="validUntil" type="java.util.Date">
+                        <modifiers read="true" write="true" search="true" optional="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="product" type="Product">
+                        <modifiers read="true" write="true" search="true" optional="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="userEmail" type="java.lang.String">
+                        <modifiers read="true" write="true" search="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+
+        </typegroup>
+
     </itemtypes>
 </items>
