@@ -550,5 +550,13 @@
 	<bean id="customCustomerLocDao" class="com.sample.module.core.customer.dao.impl.DefaultCustomCustomerLocDao" />
 	<bean id="customCustomerLocModelService" class="com.sample.module.core.customer.impl.DefaultCustomerLocModelService"/>
 
+	<bean id="defaultDigitalProductService" class="com.sample.module.core.digitalservice.impl.DefaultDigitalProductService"/>
+
+	<!-- Custom Review Service START -->
+	<alias alias="customerReviewService" name="myCustomProductService"/>
+	<bean id="myCustomProductService" class="com.sample.module.core.review.CustomReviewService"
+		  parent="defaultCustomerReviewService"/>
+	<!-- Custom Review Service END -->
+
 
 </beans>

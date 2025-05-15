@@ -17,23 +17,18 @@ import javax.annotation.Resource;
 
 @Controller
 @ApiVersion("v2")
-@Api(tags = "ExpressDelivery Controller")
+@Api(tags = "Digital Site Controller")
 @RequestMapping(value = "/{baseSiteId}")
 public class DigitalController
 {
     private static final Logger LOG = LoggerFactory.getLogger(DigitalController.class);
 
- /*   @Autowired
-    private CustomFacade customFacade;*/
-
     @Resource(name = "digitalFacade")
     private DigitalFacade digitalFacade;
 
-   /* @Resource(name = "dataMapper")
-    private DataMapper dataMapper;*/
 
     @GetMapping("/hello-digital")
-    public ResponseEntity<String> sayHello() {
+    public ResponseEntity<String> sayHelloDIgital() {
         return ResponseEntity.ok("Hello from my digital controller!");
     }
 
@@ -44,8 +39,8 @@ public class DigitalController
     }
 
     @GetMapping("/getDownloadAccess")
-    public ResponseEntity<String> getDownloadAccess(@RequestParam String token) throws Exception {
-        String downloadLink = digitalFacade.getDownloadAccess(token);
+    public ResponseEntity<String> getDownloadAccess(@RequestParam String token, @RequestParam String email) throws Exception {
+        String downloadLink = digitalFacade.getDownloadAccess(token,email);
         return ResponseEntity.ok(downloadLink);
     }
 

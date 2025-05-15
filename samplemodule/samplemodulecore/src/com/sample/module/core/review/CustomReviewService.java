@@ -1,4 +1,4 @@
-package com.customer.feebback.service;
+package com.sample.module.core.review;
 
 import de.hybris.platform.core.model.product.ProductModel;
 import de.hybris.platform.core.model.user.UserModel;
@@ -6,7 +6,7 @@ import de.hybris.platform.customerreview.enums.CustomerReviewApprovalType;
 import de.hybris.platform.customerreview.impl.DefaultCustomerReviewService;
 import de.hybris.platform.customerreview.model.CustomerReviewModel;
 
-public class MyCustomCustomerReviewService extends DefaultCustomerReviewService {
+public class CustomReviewService extends DefaultCustomerReviewService {
 
     private static final double AUTO_APPROVAL_THRESHOLD = 4.0; // Example: Approve if rating is 4 or above
 
@@ -34,4 +34,3 @@ public class MyCustomCustomerReviewService extends DefaultCustomerReviewService 
         return review;
     }
 }
-

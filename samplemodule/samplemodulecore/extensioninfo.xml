@@ -15,6 +15,8 @@
 
         <requires-extension name="commercefacades"/>
         <requires-extension name="platformservices"/>
+
+        <requires-extension name="customerreview"/>
                 		
         
         <coremodule generated="true" manager="com.sample.module.core.jalo.SamplemoduleCoreManager" packageroot="com.sample.module.core"/>

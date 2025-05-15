@@ -1,6 +1,7 @@
 package com.sample.module.facades.impl;
 
 import com.custom.occ.dto.CustomProductWsDTO;
+import com.sample.module.core.digitalservice.DigitalProductService;
 import com.sample.module.core.model.DownloadUrlPropsModel;
 import com.sample.module.core.product.ProductModelService;
 import com.sample.module.facades.DigitalFacade;
@@ -27,6 +28,8 @@ public class DefaultDigitalFacade implements DigitalFacade{
     @Resource(name = "productUpdateExpressFlagPopulator")
     private Populator<CustomProductWsDTO, ProductModel> productUpdateExpressFlagPopulator;
 
+    @Resource(name = "defaultDigitalProductService")
+    private DigitalProductService defaultDigitalProductService;
 
     @Override
     public String generateDownloadLink(String code, String email) {
@@ -43,18 +46,24 @@ public class DefaultDigitalFacade implements DigitalFacade{
     }
 
     @Override
-    public String getDownloadAccess(String downloadToken) throws Exception {
+    public String getDownloadAccess(String downloadToken, String email) throws Exception {
         DownloadUrlPropsModel link = findDownloadLinkByToken(downloadToken);
 
+        if(!email.equalsIgnoreCase(link.getUserEmail())) {
+            throw new Exception("User details not verified. Please try again.");
+        }
         if (link == null || new Date().after(link.getValidUntil())) {
             throw new Exception("Download link is expired or has reached its limit.");
         }
 
         ProductModel productModel = link.getProduct();
         String downloadUrl = productModel.getDownloadUrl();
+        boolean downloadRequestStatus = defaultDigitalProductService.downloadRequest(downloadUrl);
 
-        //String fileUrl = link.getProduct().getDownloadUrl();
-        return downloadUrl;
+        if (!downloadRequestStatus) {
+            return "Download Failed";
+        }
+        return "Download Success";
     }
 
     @Override
