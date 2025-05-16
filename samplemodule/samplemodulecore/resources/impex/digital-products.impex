@@ -1,31 +1,55 @@
-## Digital Catalog
+## Digital Product Catalog
 INSERT_UPDATE Catalog; id[unique = true]; name[lang = en]
 ; digitalProduct; Digital Products
+
+## Digital Content Catalog
+INSERT_UPDATE Catalog; id[unique = true]; name[lang = en]
+; digitalContent; Digital Contents
 
 ## Define Catalog version
 INSERT_UPDATE CatalogVersion; catalog(id)[unique = true]; version[unique = true]; active
 ; digitalProduct; Online; true
 INSERT_UPDATE CatalogVersion; catalog(id)[unique = true]; version[unique = true]; active
 ; digitalProduct; Staged; false
+INSERT_UPDATE CatalogVersion; catalog(id)[unique = true]; version[unique = true]; active
+; digitalContent; Online; true
+INSERT_UPDATE CatalogVersion; catalog(id)[unique = true]; version[unique = true]; active
+; digitalContent; Staged; false
 
+## Setup base store
+INSERT_UPDATE BaseStore;uid[unique=true];name;catalogs(id);currencies(isocode);defaultLanguage(isocode);languages(isoCode)
+;digitalStore;Digital Store;digitalProduct;USD;en;en
+
+## Setup base site
+INSERT_UPDATE BaseSite;uid[unique=true];stores(uid);channel(code);defaultLanguage(isoCode)
+;digitalSite;digitalStore;B2C;en
+
+
+## Setup CMS site
+INSERT_UPDATE CMSSite;uid[unique=true];name[lang=en];stores(uid);defaultCatalog(id);urlPatterns
+;digitalCMSSite; Digital CMS Store Site;digitalStore;digitalContent;/digitalstore.*
 
 ## Normal Category
 INSERT_UPDATE Category; code[unique = true]; catalogVersion(catalog(id), version); name[lang = en]
 ; digital-cat; digitalProduct:Online; Super Digital X
 
-
+## Sync jobs
 INSERT_UPDATE CatalogVersionSyncJob;code[unique=true];sourceVersion(catalog(id), version);targetVersion(catalog(id), version);syncPrincipals(uid)
 ;digitalProduct;digitalProduct:Staged;digitalProduct:Online;admin
+INSERT_UPDATE CatalogVersionSyncJob;code[unique=true];sourceVersion(catalog(id),version)[unique=true];targetVersion(catalog(id),version)[unique=true]
+;digitalContent;digitalContent:Staged;digitalContent:Online
 
 
 # --- Digital Product 1: eBook ---
 INSERT_UPDATE Product; code[unique = true]; name[lang = en]; catalogVersion(catalog(id), version); downloadurl; isdigitalproduct; supercategories(code)
-; ebook-001 ; Learn impex in 24 Hours ; digitalProduct:Online ; https://digitalsource.s3.us-west-2.amazonaws.com/Impex-bkp.txt ; true ; digital-cat
+; ebook-001 ; Learn impex in 24 Hours ; digitalProduct:Staged ; https://digitalsource.s3.us-west-2.amazonaws.com/Impex-bkp.txt ; true ; digital-cat
 
 # --- Digital Product 2: Music File ---
 INSERT_UPDATE Product; code[unique = true]; name[lang = en]; catalogVersion(catalog(id), version); downloadurl; isdigitalproduct; supercategories(code)
-; music-001 ; Ambient Soundtrack Vol.1 ; digitalProduct:Online ; https://cdn.mysite.com/downloads/ambient.mp3 ; true ; digital-category
+; music-001 ; Ambient Soundtrack Vol.1 ; digitalProduct:Staged ; https://digitalsource.s3.us-west-2.amazonaws.com/file_example_MP3_700KB.mp3 ; true ; digital-cat
 
-# --- Digital Product 3: Software ---
 INSERT_UPDATE Product; code[unique = true]; name[lang = en]; catalogVersion(catalog(id), version); downloadurl; isdigitalproduct; supercategories(code)
-; software-001 ; Photo Editor Pro ; digitalProduct:Staged ; https://cdn.mysite.com/downloads/photo-editor.zip ; true ; digital-category
+; sqlfile-001 ; Sql source ; digitalProduct:Staged ; fsqls-bkp.txt ; true ; digital-cat
+
+INSERT_UPDATE Product; code[unique = true]; name[lang = en]; catalogVersion(catalog(id), version); downloadurl; isdigitalproduct; supercategories(code)
+; music-002 ; Ambient Soundtrack Vol.2 ; digitalProduct:Staged ; file_example_MP3_secured.mp3 ; true ; digital-cat

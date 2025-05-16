@@ -50,5 +50,11 @@ public class DigitalController
         return ResponseEntity.ok(downloadLink);
     }
 
+    @GetMapping("/getSecuredDownloadAccess")
+    public ResponseEntity<String> getSecuredDownloadAccess(@RequestParam String token, @RequestParam String email) throws Exception {
+        String downloadLink = digitalFacade.getSecuredDownloadAccess(token,email);
+        return ResponseEntity.ok(downloadLink);
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package com.sample.module.facades.impl;
 
 import com.custom.occ.dto.CustomProductWsDTO;
+import com.sample.module.core.awsservice.impl.DefaultS3PresignedUrlService;
 import com.sample.module.core.digitalservice.DigitalProductService;
 import com.sample.module.core.model.DownloadUrlPropsModel;
 import com.sample.module.core.product.ProductModelService;
@@ -11,6 +12,7 @@ import de.hybris.platform.servicelayer.model.ModelService;
 import org.apache.commons.lang.time.DateUtils;
 
 import javax.annotation.Resource;
+import java.time.Duration;
 import java.util.Date;
 import java.util.UUID;
 
@@ -31,6 +33,9 @@ public class DefaultDigitalFacade implements DigitalFacade{
     @Resource(name = "defaultDigitalProductService")
     private DigitalProductService defaultDigitalProductService;
 
+    @Resource(name = "s3PresignedUrlService")
+    private DefaultS3PresignedUrlService s3PresignedUrlService;
+
     @Override
     public String generateDownloadLink(String code, String email) {
         ProductModel productByCode = productModelService.getProductByCode(code);
@@ -41,7 +46,12 @@ public class DefaultDigitalFacade implements DigitalFacade{
 
         link.setProduct(productByCode);
         link.setUserEmail(email);
+
+        link.setMaxDownloads(5);
+        link.setDownloadCount(0);
+
         modelService.save(link);
+        modelService.refresh(link);
         return link.getDownloadToken();
     }
 
@@ -50,10 +60,16 @@ public class DefaultDigitalFacade implements DigitalFacade{
         DownloadUrlPropsModel link = findDownloadLinkByToken(downloadToken);
 
         if(!email.equalsIgnoreCase(link.getUserEmail())) {
-            throw new Exception("User details not verified. Please try again.");
+            return "Download failed - Invalid user cedentials.";
+            //throw new Exception("User details not verified. Please try again.");
         }
         if (link == null || new Date().after(link.getValidUntil())) {
-            throw new Exception("Download link is expired or has reached its limit.");
+            return "Download failed - Link expired.";
+            //throw new Exception("Download link is expired or has reached its limit.");
+        }
+        if(link.getDownloadCount() >= link.getMaxDownloads()){
+            return "Download failed - Download limit exceeded.";
+            //throw new Exception("Download limit reached.");
         }
 
         ProductModel productModel = link.getProduct();
@@ -63,6 +79,9 @@ public class DefaultDigitalFacade implements DigitalFacade{
         if (!downloadRequestStatus) {
             return "Download Failed";
         }
+        link.setDownloadCount(link.getDownloadCount() + 1);
+        modelService.save(link);
+        modelService.refresh(link);
         return "Download Success";
     }
 
@@ -73,6 +92,41 @@ public class DefaultDigitalFacade implements DigitalFacade{
         productUpdateExpressFlagPopulator.populate(customProductWsDTO, model);
         modelService.save(model);
         return model.getDownloadUrl();
+    }
+
+    @Override
+    public String getSecuredDownloadAccess(String downloadToken, String email) throws Exception {
+
+        DownloadUrlPropsModel link = findDownloadLinkByToken(downloadToken);
+
+        if(!email.equalsIgnoreCase(link.getUserEmail())) {
+            return "Download failed - Invalid user cedentials.";
+            //throw new Exception("User details not verified. Please try again.");
+        }
+        if (link == null || new Date().after(link.getValidUntil())) {
+            return "Download failed - Link expired.";
+            //throw new Exception("Download link is expired or has reached its limit.");
+        }
+        if(link.getDownloadCount() >= link.getMaxDownloads()){
+            return "Download failed - Download limit exceeded.";
+            //throw new Exception("Download limit reached.");
+        }
+
+        ProductModel productModel = link.getProduct();
+        String downloadUrl = productModel.getDownloadUrl();
+
+        String presignedUrl = s3PresignedUrlService.generatePresignedUrl("digitalsource", downloadUrl, Duration.ofMinutes(5l));
+
+
+        boolean downloadRequestStatus = defaultDigitalProductService.downloadRequest(presignedUrl);
+
+        if (!downloadRequestStatus) {
+            return "Download Failed";
+        }
+        link.setDownloadCount(link.getDownloadCount() + 1);
+        modelService.save(link);
+        modelService.refresh(link);
+        return "Download Success";
     }
 
     private DownloadUrlPropsModel findDownloadLinkByToken(String token) {

@@ -248,6 +248,14 @@
                         <modifiers read="true" write="true" search="true"/>
                         <persistence type="property"/>
                     </attribute>
+                    <attribute qualifier="maxDownloads" type="java.lang.Integer">
+                        <modifiers read="true" write="true" search="true" optional="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="downloadCount" type="java.lang.Integer">
+                        <modifiers read="true" write="true" search="true" optional="true"/>
+                        <persistence type="property"/>
+                    </attribute>
                 </attributes>
             </itemtype>
 

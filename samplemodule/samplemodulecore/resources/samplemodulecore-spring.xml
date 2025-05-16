@@ -558,5 +558,16 @@
 		  parent="defaultCustomerReviewService"/>
 	<!-- Custom Review Service END -->
 
+	<!-- Presigned URL params START -->
+	<context:property-placeholder location="file:${HYBRIS_CONFIG_DIR}/local.properties"/>
+
+	<bean id="s3PresignedUrlService" class="com.sample.module.core.awsservice.impl.DefaultS3PresignedUrlService">
+		<property name="awsAccessKey" value="${aws.accessKey}" />
+		<property name="awsSecretKey" value="${aws.secretKey}" />
+		<property name="awsRegion" value="us-west-2" />
+	</bean>
+
+	<!-- Presigned URL params END -->
+
 
 </beans>

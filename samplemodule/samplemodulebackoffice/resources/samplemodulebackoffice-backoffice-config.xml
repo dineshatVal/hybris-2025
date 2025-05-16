@@ -3,7 +3,11 @@
  Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
 -->
 <config xmlns="http://www.hybris.com/cockpit/config"
-	xmlns:na="http://www.hybris.com/cockpitng/config/notifications">
+		xmlns:na="http://www.hybris.com/cockpitng/config/notifications"
+		xmlns:editorArea="http://www.hybris.com/cockpitng/component/editorArea"
+		xmlns:list-view="http://www.hybris.com/cockpitng/component/listView"
+		xmlns:explorer-tree="http://www.hybris.com/cockpitng/config/explorertree"
+		xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch">
 
 	<context merge-by="module" component="editorareaactions" type="Consignment">
 		<y:actions xmlns:y="http://www.hybris.com/cockpit/config/hybris">
@@ -22,5 +26,55 @@
 	        </na:notifications>
 	   </na:notification-area>
 	</context>
+
+	<context component="explorer-tree">
+		<explorer-tree:explorer-tree>
+			<explorer-tree:navigation-node id="hmc_DownloadUrlProps" merge-mode="APPEND">
+				<explorer-tree:type-node code="DownloadUrlProps" id="hmc_DownloadUrlPropsNode"/>
+			</explorer-tree:navigation-node>
+		</explorer-tree:explorer-tree>
+	</context>
+
+
+	<context type="DownloadUrlProps" component="editorArea">
+		<editorArea:editorArea>
+		<editorArea:tab name="downloadprops" >
+			<editorArea:section name="hmc.section.downloadurlprops">
+				<editorArea:attribute qualifier="downloadToken"/>
+				<editorArea:attribute qualifier="validUntil"/>
+				<editorArea:attribute qualifier="product"/>
+				<editorArea:attribute qualifier="userEmail"/>
+				<editorArea:attribute qualifier="maxDownloads"/>
+				<editorArea:attribute qualifier="downloadCount"/>
+			</editorArea:section>
+		</editorArea:tab>
+		</editorArea:editorArea>
+	</context>
+
+	<context type="DownloadUrlProps" component="list-view">
+		<list-view:list-view>
+			<list-view:column qualifier="downloadToken"/>
+			<list-view:column qualifier="validUntil"/>
+			<list-view:column qualifier="product"/>
+			<list-view:column qualifier="userEmail"/>
+			<list-view:column qualifier="maxDownloads"/>
+			<list-view:column qualifier="downloadCount"/>
+		</list-view:list-view>
+	</context>
+
+	<context type="DownloadUrlProps" component="advanced-search">
+		<advanced-search:advanced-search>
+			<advanced-search:field-list>
+				<advanced-search:field name="downloadToken"/>
+				<advanced-search:field name="validUntil"/>
+				<advanced-search:field name="product"/>
+				<advanced-search:field name="userEmail"/>
+				<advanced-search:field name="maxDownloads"/>
+				<advanced-search:field name="downloadCount"/>
+			</advanced-search:field-list>
+
+		</advanced-search:advanced-search>
+	</context>
+
 
 </config>
