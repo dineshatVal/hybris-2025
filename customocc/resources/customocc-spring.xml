@@ -18,7 +18,11 @@
 	<bean id="customFacade" class="com.sample.module.facades.impl.DefaultCustomFacade"/>
 	<bean id="customCustomerFacade" class="com.sample.module.facades.impl.DefaultCustomCustomerLocFacade"/>
 
-	<bean id="digitalFacade" class="com.sample.module.facades.impl.DefaultDigitalFacade"/>
+	<bean id="digitalFacade" class="com.sample.module.facades.impl.DefaultDigitalFacade">
+		<property name="maxDownload" value="${downloadprops.maxdownload}" />
+		<property name="signedUrlValidityPeriod" value="${aws.s3signedurl.validity}" />
+		<property name="bucketName" value="${aws.bucketName}" />
+	</bean>
 
 
 

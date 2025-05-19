@@ -24,9 +24,6 @@ public class DefaultDigitalFacade implements DigitalFacade{
     @Resource(name = "productModelService")
     private ProductModelService productModelService;
 
-    /*@Resource(name = "digitalProductUpdatePopulator")
-    private Populator<CustomProductWsDTO, ProductModel> digitalProductUpdatePopulator;*/
-
     @Resource(name = "productUpdateExpressFlagPopulator")
     private Populator<CustomProductWsDTO, ProductModel> productUpdateExpressFlagPopulator;
 
@@ -35,6 +32,10 @@ public class DefaultDigitalFacade implements DigitalFacade{
 
     @Resource(name = "s3PresignedUrlService")
     private DefaultS3PresignedUrlService s3PresignedUrlService;
+
+    private int maxDownload;
+    private long signedUrlValidityPeriod;
+    private String bucketName;
 
     @Override
     public String generateDownloadLink(String code, String email) {
@@ -47,7 +48,8 @@ public class DefaultDigitalFacade implements DigitalFacade{
         link.setProduct(productByCode);
         link.setUserEmail(email);
 
-        link.setMaxDownloads(5);
+        //link.setMaxDownloads(5);
+        link.setMaxDownloads(maxDownload);
         link.setDownloadCount(0);
 
         modelService.save(link);
@@ -115,7 +117,7 @@ public class DefaultDigitalFacade implements DigitalFacade{
         ProductModel productModel = link.getProduct();
         String downloadUrl = productModel.getDownloadUrl();
 
-        String presignedUrl = s3PresignedUrlService.generatePresignedUrl("digitalsource", downloadUrl, Duration.ofMinutes(5l));
+        String presignedUrl = s3PresignedUrlService.generatePresignedUrl(bucketName, downloadUrl, Duration.ofMinutes(signedUrlValidityPeriod));
 
 
         boolean downloadRequestStatus = defaultDigitalProductService.downloadRequest(presignedUrl);
@@ -131,5 +133,17 @@ public class DefaultDigitalFacade implements DigitalFacade{
 
     private DownloadUrlPropsModel findDownloadLinkByToken(String token) {
         return productModelService.getDownloadUrlPropsModel(token);
+    }
+
+    public void setMaxDownload(int maxDownload) {
+        this.maxDownload = maxDownload;
+    }
+
+    public void setSignedUrlValidityPeriod(long signedUrlValidityPeriod) {
+        this.signedUrlValidityPeriod = signedUrlValidityPeriod;
+    }
+
+    public void setBucketName(String bucketName) {
+        this.bucketName = bucketName;
     }
 }
