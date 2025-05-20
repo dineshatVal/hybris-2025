@@ -1,10 +1,11 @@
 package com.sample.module.facades.impl;
 
 import com.custom.occ.dto.CustomProductWsDTO;
-import com.sample.module.core.awsservice.impl.DefaultS3PresignedUrlService;
+import com.sample.module.core.awsservice.S3PresignedUrlService;
 import com.sample.module.core.digitalservice.DigitalProductService;
 import com.sample.module.core.model.DownloadUrlPropsModel;
 import com.sample.module.core.product.ProductModelService;
+import com.sample.module.core.token.CustomTokenService;
 import com.sample.module.facades.DigitalFacade;
 import de.hybris.platform.converters.Populator;
 import de.hybris.platform.core.model.product.ProductModel;
@@ -14,7 +15,6 @@ import org.apache.commons.lang.time.DateUtils;
 import javax.annotation.Resource;
 import java.time.Duration;
 import java.util.Date;
-import java.util.UUID;
 
 public class DefaultDigitalFacade implements DigitalFacade{
 
@@ -31,24 +31,26 @@ public class DefaultDigitalFacade implements DigitalFacade{
     private DigitalProductService defaultDigitalProductService;
 
     @Resource(name = "s3PresignedUrlService")
-    private DefaultS3PresignedUrlService s3PresignedUrlService;
+    private S3PresignedUrlService s3PresignedUrlService;
+
+    @Resource(name = "defaultCustomTokenService")
+    private CustomTokenService defaultCustomTokenService;
 
     private int maxDownload;
     private long signedUrlValidityPeriod;
     private String bucketName;
 
     @Override
-    public String generateDownloadLink(String code, String email) {
+    public String generateDownloadLink(String orderNum, String code, String email) {
         ProductModel productByCode = productModelService.getProductByCode(code);
 
         DownloadUrlPropsModel link = modelService.create(DownloadUrlPropsModel.class);
-        link.setDownloadToken(UUID.randomUUID().toString());
+        link.setDownloadToken(defaultCustomTokenService.generateToken(orderNum,code,email));
         link.setValidUntil(DateUtils.addDays(new Date(), 7));
 
         link.setProduct(productByCode);
         link.setUserEmail(email);
 
-        //link.setMaxDownloads(5);
         link.setMaxDownloads(maxDownload);
         link.setDownloadCount(0);
 
@@ -57,7 +59,7 @@ public class DefaultDigitalFacade implements DigitalFacade{
         return link.getDownloadToken();
     }
 
-    @Override
+    /*@Override
     public String getDownloadAccess(String downloadToken, String email) throws Exception {
         DownloadUrlPropsModel link = findDownloadLinkByToken(downloadToken);
 
@@ -85,7 +87,7 @@ public class DefaultDigitalFacade implements DigitalFacade{
         modelService.save(link);
         modelService.refresh(link);
         return "Download Success";
-    }
+    }*/
 
     @Override
     public String updateDigitalProduct(CustomProductWsDTO customProductWsDTO) {
@@ -97,9 +99,9 @@ public class DefaultDigitalFacade implements DigitalFacade{
     }
 
     @Override
-    public String getSecuredDownloadAccess(String downloadToken, String email) throws Exception {
+    public String getSecuredDownloadAccess(String orderNum, String code, String email) throws Exception {
 
-        DownloadUrlPropsModel link = findDownloadLinkByToken(downloadToken);
+        DownloadUrlPropsModel link = findDownloadLinkByToken(defaultCustomTokenService.generateToken(orderNum,code,email));
 
         if(!email.equalsIgnoreCase(link.getUserEmail())) {
             return "Download failed - Invalid user cedentials.";

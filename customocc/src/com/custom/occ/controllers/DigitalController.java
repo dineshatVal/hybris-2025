@@ -28,21 +28,27 @@ public class DigitalController
 
 
     @GetMapping("/hello-digital")
-    public ResponseEntity<String> sayHelloDIgital() {
+    public ResponseEntity<String> sayHelloDigital() {
         return ResponseEntity.ok("Hello from my digital controller!");
     }
 
-    @PostMapping("/addUrlProps")
+    /*@PostMapping("/addUrlProps")
     public ResponseEntity<String> addUrlProps(@RequestParam String code, @RequestParam String email) {
         String generateDownloadToken = digitalFacade.generateDownloadLink(code, email);
         return ResponseEntity.ok(generateDownloadToken);
+    }*/
+
+    @PostMapping("/addDownloadUrlProps")
+    public ResponseEntity<String> addDownloadUrlProps(@RequestParam String orderNum, @RequestParam String code, @RequestParam String email) {
+        String generateDownloadToken = digitalFacade.generateDownloadLink(orderNum, code, email);
+        return ResponseEntity.ok(generateDownloadToken);
     }
 
-    @GetMapping("/getDownloadAccess")
+    /*@GetMapping("/getDownloadAccess")
     public ResponseEntity<String> getDownloadAccess(@RequestParam String token, @RequestParam String email) throws Exception {
         String downloadLink = digitalFacade.getDownloadAccess(token,email);
         return ResponseEntity.ok(downloadLink);
-    }
+    }*/
 
     @PostMapping("/updateDigitalProduct")
     public ResponseEntity<String> updateDigitalProduct(@RequestBody CustomProductWsDTO customProductWsDTO) throws Exception {
@@ -50,9 +56,15 @@ public class DigitalController
         return ResponseEntity.ok(downloadLink);
     }
 
-    @GetMapping("/getSecuredDownloadAccess")
+    /*@GetMapping("/getSecuredDownloadAccess")
     public ResponseEntity<String> getSecuredDownloadAccess(@RequestParam String token, @RequestParam String email) throws Exception {
         String downloadLink = digitalFacade.getSecuredDownloadAccess(token,email);
+        return ResponseEntity.ok(downloadLink);
+    }*/
+
+    @GetMapping("/getSecuredDownloadAccess")
+    public ResponseEntity<String> getSecuredDownloadAccess(@RequestParam String orderNum, @RequestParam String code, @RequestParam String email) throws Exception {
+        String downloadLink = digitalFacade.getSecuredDownloadAccess(orderNum,code,email);
         return ResponseEntity.ok(downloadLink);
     }
 

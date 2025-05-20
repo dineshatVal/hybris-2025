@@ -569,5 +569,8 @@
 
 	<!-- Presigned URL params END -->
 
+	<!-- Token service START -->
+	<bean id="defaultCustomTokenService" class="com.sample.module.core.token.impl.DefaultCustomTokenServiceImpl"/>
+	<!-- Token service END -->
 
 </beans>
