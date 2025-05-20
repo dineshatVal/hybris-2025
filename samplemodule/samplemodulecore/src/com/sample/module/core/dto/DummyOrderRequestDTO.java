@@ -1,9 +1,11 @@
 package com.sample.module.core.dto;
 
+import java.util.List;
+
 public class DummyOrderRequestDTO {
     private String userId;
-    private String productCode;
-    private Long quantity;
+    private List<ProductEntry> productEntries;
+
 
     public String getUserId() {
         return userId;
@@ -13,19 +15,36 @@ public class DummyOrderRequestDTO {
         this.userId = userId;
     }
 
-    public String getProductCode() {
-        return productCode;
+    public List<ProductEntry> getProductEntries() {
+        return productEntries;
     }
 
-    public void setProductCode(String productCode) {
-        this.productCode = productCode;
+    public void setProductEntries(List<ProductEntry> productEntries) {
+        this.productEntries = productEntries;
     }
 
-    public Long getQuantity() {
-        return quantity;
-    }
+    public static class ProductEntry{
+        private String productCode;
+        private Long quantity;
 
-    public void setQuantity(Long quantity) {
-        this.quantity = quantity;
+        public ProductEntry() {
+            // Default constructor
+        }
+
+        public String getProductCode() {
+            return productCode;
+        }
+
+        public void setProductCode(String productCode) {
+            this.productCode = productCode;
+        }
+
+        public Long getQuantity() {
+            return quantity;
+        }
+
+        public void setQuantity(Long quantity) {
+            this.quantity = quantity;
+        }
     }
 }
