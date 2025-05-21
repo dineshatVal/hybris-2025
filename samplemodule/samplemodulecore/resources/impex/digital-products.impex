@@ -53,3 +53,6 @@ INSERT_UPDATE Product; code[unique = true]; name[lang = en]; catalogVersion(cata
 
 INSERT_UPDATE Product; code[unique = true]; name[lang = en]; catalogVersion(catalog(id), version); downloadurl; isdigitalproduct; supercategories(code)
 ; music-002 ; Ambient Soundtrack Vol.2 ; digitalProduct:Staged ; file_example_MP3_secured.mp3 ; true ; digital-cat
+
+INSERT_UPDATE Product; code[unique = true]; name[lang = en]; catalogVersion(catalog(id), version); downloadurl; isdigitalproduct; supercategories(code)
+; hybris-qs ; Hybris Questionaire ; digitalProduct:Staged ; C_HYCBA_60_Sample_Questions_CORRECTED_06_23_2016.pdf ; true ; digital-cat

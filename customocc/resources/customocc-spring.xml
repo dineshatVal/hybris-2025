@@ -24,6 +24,8 @@
 		<property name="bucketName" value="${aws.bucketName}" />
 	</bean>
 
+	<bean id="customOrderCreationFacade" class="com.sample.module.facades.customorder.impl.DefaultCustomOrderCreationFacade"/>
+
 
 
 </beans>

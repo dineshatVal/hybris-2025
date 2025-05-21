@@ -573,4 +573,9 @@
 	<bean id="defaultCustomTokenService" class="com.sample.module.core.token.impl.DefaultCustomTokenServiceImpl"/>
 	<!-- Token service END -->
 
+	<bean id="customOrderCreationService" class="com.sample.module.core.customorder.impl.DefaultCustomOrderCreationService"/>
+
+	<bean id="pdfStampingService" class="com.sample.module.core.drm.pdfstamping.impl.DefaultPDFStampService"/>
+
+
 </beans>

@@ -10,6 +10,7 @@ import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,7 @@ public class DigitalController
     @Resource(name = "digitalFacade")
     private DigitalFacade digitalFacade;
 
-
+    @Secured("ROLE_CLIENT")
     @GetMapping("/hello-digital")
     public ResponseEntity<String> sayHelloDigital() {
         return ResponseEntity.ok("Hello from my digital controller!");
@@ -37,7 +38,7 @@ public class DigitalController
         String generateDownloadToken = digitalFacade.generateDownloadLink(code, email);
         return ResponseEntity.ok(generateDownloadToken);
     }*/
-
+    @Secured("ROLE_CLIENT")
     @PostMapping("/addDownloadUrlProps")
     public ResponseEntity<String> addDownloadUrlProps(@RequestParam String orderNum, @RequestParam String code, @RequestParam String email) {
         String generateDownloadToken = digitalFacade.generateDownloadLink(orderNum, code, email);
@@ -49,7 +50,7 @@ public class DigitalController
         String downloadLink = digitalFacade.getDownloadAccess(token,email);
         return ResponseEntity.ok(downloadLink);
     }*/
-
+    @Secured("ROLE_CLIENT")
     @PostMapping("/updateDigitalProduct")
     public ResponseEntity<String> updateDigitalProduct(@RequestBody CustomProductWsDTO customProductWsDTO) throws Exception {
         String downloadLink = digitalFacade.updateDigitalProduct(customProductWsDTO);
@@ -62,6 +63,7 @@ public class DigitalController
         return ResponseEntity.ok(downloadLink);
     }*/
 
+    @Secured("ROLE_CLIENT")
     @GetMapping("/getSecuredDownloadAccess")
     public ResponseEntity<String> getSecuredDownloadAccess(@RequestParam String orderNum, @RequestParam String code, @RequestParam String email) throws Exception {
         String downloadLink = digitalFacade.getSecuredDownloadAccess(orderNum,code,email);
