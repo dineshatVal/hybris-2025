@@ -19,7 +19,7 @@ public class DefaultCustomOrderCreationFacade implements CustomOrderCreationFaca
     private CustomOrderCreationService customOrderCreationService;
 
     @Override
-    public String createCustomOrder(String userId, List<DummyOrderRequestDTO.ProductEntry> productEntryList) {
+    public OrderModel createCustomOrder(String userId, List<DummyOrderRequestDTO.ProductEntry> productEntryList) {
         try {
             OrderModel order = customOrderCreationService.createCustomOrder(userId, productEntryList);
             //add download url params
@@ -27,10 +27,12 @@ public class DefaultCustomOrderCreationFacade implements CustomOrderCreationFaca
                 digitalFacade.generateDownloadLink(order.getCode(), productEntry.getProductCode(), userId);
             }
 
-            return "Order created with code: " + order.getCode();
+            return order;
+            //return "Order created with code: " + order.getCode();
 
         } catch (Exception e) {
-            return "Error creating dummy order: " + e.getMessage();
+            throw e;
+            //return "Error creating dummy order: " + e.getMessage();
         }
     }
 }

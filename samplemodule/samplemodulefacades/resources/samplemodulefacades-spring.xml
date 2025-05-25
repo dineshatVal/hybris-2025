@@ -232,4 +232,8 @@
 	<bean id="productUpdateExpressFlagPopulator" class="com.sample.module.facades.populators.UpdateProductFlagsPopulator"/>
 	<!-- To update product express flag END -->
 
+	<!-- Custom Cart2Order Facade START -->
+	<bean id="customcart2orderfacade" class="com.sample.module.facades.customorder.impl.DefaultCustomCart2OrderCreationFacade"/>
+	<!-- Custom Cart2Order Facade END -->
+
 </beans>

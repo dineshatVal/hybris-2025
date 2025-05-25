@@ -14,13 +14,13 @@
 	</bean>
 	<!--  Approach 2 -->
 	<bean class="de.hybris.platform.commercefacades.product.data.ProductData">
-		<property name="expressDeliveryEligibility" type="boolean"/>
+		<property name="expressDeliveryEligibility" type="Boolean"/>
 	</bean>
 
 	<!--  To insert data in CustomCustomerLoc -->
 	<bean class="com.sample.module.facades.customcustomerloc.data.CustomCustomLocData">
 		<property name="countryIsoCode" type="String"/>
 		<property name="regionIsoCodeShort" type="String"/>
-		<property name="expressDelivery" type="boolean"/>
+		<property name="expressDelivery" type="Boolean"/>
 	</bean>
 </beans>

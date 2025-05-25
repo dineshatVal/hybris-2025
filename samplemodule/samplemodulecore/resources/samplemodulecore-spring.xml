@@ -573,9 +573,30 @@
 	<bean id="defaultCustomTokenService" class="com.sample.module.core.token.impl.DefaultCustomTokenServiceImpl"/>
 	<!-- Token service END -->
 
+	<!-- Custom order creation START -->
 	<bean id="customOrderCreationService" class="com.sample.module.core.customorder.impl.DefaultCustomOrderCreationService"/>
+	<!-- Custom order creation START -->
 
+	<!-- PDF stamping START -->
 	<bean id="pdfStampingService" class="com.sample.module.core.drm.pdfstamping.impl.DefaultPDFStampService"/>
+	<!-- PDF stamping START -->
+
+	<!-- Loyalty Service and event listener START -->
+	<bean id="loyaltyRuleService" class="com.sample.module.core.loyalty.impl.DefaultLoyaltyRuleService"/>
+
+	<bean id="loyaltyPointsEventListener" class="com.sample.module.core.loyalty.CustomLoyaltyPointsEventListener">
+		<property name="loyaltyPointStrategy" ref="loyaltyPointStrategy"/>
+		<property name="tenantService" ref="tenantService"/>
+		<property name="clusterService" ref="clusterService"/>
+	</bean>
+	<bean id="loyaltyPointStrategy" class="com.sample.module.core.loyalty.LoyaltyPointStrategy"/>
+	<!-- Loyalty Service and event listener END -->
+
+	<!-- Service for Cart2Order conversion START -->
+	<bean id="cart2orderconversionservice" class="com.sample.module.core.customorder.impl.DefaultCustomCart2OrderCreationService"/>
+	<!-- Service for Cart2Order conversion END -->
+
+
 
 
 </beans>

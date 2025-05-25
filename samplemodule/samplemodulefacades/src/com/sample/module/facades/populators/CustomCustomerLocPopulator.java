@@ -15,7 +15,7 @@ public class CustomCustomerLocPopulator implements Populator<CustomCustomLocData
     @Override
     public void populate(CustomCustomLocData source, CustomCustomerLocModel target) throws ConversionException {
         //target.setUid(source.getUid());
-        target.setExpressDelivery(source.isExpressDelivery());
+        target.setExpressDelivery(source.getExpressDelivery());
 
         CountryModel country = commonI18NService.getCountry(source.getCountryIsoCode());
         target.setCountry(country);

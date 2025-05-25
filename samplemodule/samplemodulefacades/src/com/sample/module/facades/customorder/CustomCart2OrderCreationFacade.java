@@ -5,6 +5,6 @@ import de.hybris.platform.core.model.order.OrderModel;
 
 import java.util.List;
 
-public interface CustomOrderCreationFacade {
-    OrderModel createCustomOrder(String userId, List<DummyOrderRequestDTO.ProductEntry> productEntryList);
+public interface CustomCart2OrderCreationFacade {
+    OrderModel createCustomOrderFromCart(String userId, List<DummyOrderRequestDTO.ProductEntry> productEntryList);
 }

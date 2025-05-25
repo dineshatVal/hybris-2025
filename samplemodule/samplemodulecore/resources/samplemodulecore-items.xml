@@ -261,5 +261,34 @@
 
         </typegroup>
 
+        <typegroup name="LoyaltyManagement">
+            <itemtype code="Customer" autocreate="false" generate="false">
+                <attributes>
+                    <attribute qualifier="loyaltyPoints" type="java.lang.Integer">
+                        <modifiers read="true" write="true" search="true" optional="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+
+            <itemtype code="LoyaltyRule" autocreate="true" generate="true">
+                <deployment table="LoyaltyRule" typecode="20005"/>
+                <attributes>
+                    <attribute qualifier="rulecode" type="java.lang.String">
+                        <modifiers read="true" search="true" unique="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="category" type="Category">
+                        <modifiers read="true" search="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="pointsPerCurrency" type="java.lang.Double">
+                        <modifiers read="true" search="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
     </itemtypes>
 </items>

@@ -11,7 +11,7 @@ public class ProductDataToDTOPopulator implements Populator<ProductData, Product
         target.setName(source.getName());
         target.setDescription(source.getDescription());
 
-        Boolean eligible = source.isExpressDeliveryEligibility();
+        Boolean eligible = source.getExpressDeliveryEligibility();
         target.setExpressDeliveryEligibility(eligible != null && eligible);
     }
 }

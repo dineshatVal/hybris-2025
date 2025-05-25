@@ -56,3 +56,20 @@ INSERT_UPDATE Product; code[unique = true]; name[lang = en]; catalogVersion(cata
 
 INSERT_UPDATE Product; code[unique = true]; name[lang = en]; catalogVersion(catalog(id), version); downloadurl; isdigitalproduct; supercategories(code)
 ; hybris-qs ; Hybris Questionaire ; digitalProduct:Staged ; C_HYCBA_60_Sample_Questions_CORRECTED_06_23_2016.pdf ; true ; digital-cat
+
+## ------ Add price -----------
+INSERT_UPDATE PriceRow;productId[unique=true];unit(code[unique=true,default=pieces]);currency(isocode)[unique=true];price;minqtd;unitFactor;net
+;license-file;pieces;USD;72.99;1;1;false
+
+INSERT_UPDATE PriceRow;productId[unique=true];unit(code[unique=true,default=pieces]);currency(isocode)[unique=true];price;minqtd;unitFactor;net
+;music-002;pieces;USD;25.00;1;1;false
+
+INSERT_UPDATE PriceRow;productId[unique=true];unit(code[unique=true,default=pieces]);currency(isocode)[unique=true];price;minqtd;unitFactor;net
+;hybris-qs;pieces;USD;35.00;1;1;false
+
+#  --------- Product Price Group -----------
+INSERT_UPDATE ProductPriceGroup; code[unique=true]
+ ; softwareLicenses
+
+
+
