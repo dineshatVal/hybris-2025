@@ -1,14 +1,17 @@
 package com.sample.module.core.product.dao.impl;
 
+import com.sample.module.core.dto.CustomException;
 import com.sample.module.core.model.DownloadUrlPropsModel;
 import com.sample.module.core.product.dao.ProductDao;
 import de.hybris.platform.catalog.CatalogVersionService;
 import de.hybris.platform.catalog.model.CatalogVersionModel;
 import de.hybris.platform.core.model.product.ProductModel;
+import de.hybris.platform.servicelayer.exceptions.ModelNotFoundException;
 import de.hybris.platform.servicelayer.search.FlexibleSearchQuery;
 import de.hybris.platform.servicelayer.search.FlexibleSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 
 import java.util.List;
 
@@ -41,10 +44,18 @@ public class DefaultProductDao implements ProductDao {
 
     @Override
     public DownloadUrlPropsModel getDownloadUrlPropsModel(String token) {
-        String query = "SELECT {pk} FROM {DownloadUrlProps} WHERE {downloadToken} = ?token";
-        FlexibleSearchQuery fsq = new FlexibleSearchQuery(query);
-        fsq.addQueryParameter("token", token);
-        DownloadUrlPropsModel downloadUrlPropsModel = flexibleSearchService.searchUnique(fsq);
-        return downloadUrlPropsModel;
+        try {
+            String query = "SELECT {pk} FROM {DownloadUrlProps} WHERE {downloadToken} = ?token";
+            FlexibleSearchQuery fsq = new FlexibleSearchQuery(query);
+            fsq.addQueryParameter("token", token);
+            DownloadUrlPropsModel downloadUrlPropsModel = flexibleSearchService.searchUnique(fsq);
+            return downloadUrlPropsModel;
+        } catch(ModelNotFoundException me) {
+            throw new CustomException("Validate emailId / ordernumber / product code provided" + me.getMessage());
+
+        } catch(Exception e) {
+            throw new CustomException("Validate emailId / ordernumber / product code provided" + e.getMessage());
+        }
+
     }
 }
