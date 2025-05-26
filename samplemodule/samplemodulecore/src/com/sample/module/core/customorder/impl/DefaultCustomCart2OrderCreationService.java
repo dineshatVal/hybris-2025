@@ -23,7 +23,6 @@ import de.hybris.platform.servicelayer.search.FlexibleSearchService;
 import de.hybris.platform.servicelayer.search.SearchResult;
 import de.hybris.platform.servicelayer.user.UserService;
 import de.hybris.platform.site.BaseSiteService;
-import de.hybris.platform.store.services.BaseStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Resource;
@@ -71,7 +70,6 @@ public class DefaultCustomCart2OrderCreationService implements CustomCart2OrderC
         commonI18NService.setCurrentCurrency(currency);
 
         // 2. Create/Get cart
-        //CartModel cart = commerceCartService.getSessionCart();
         CommerceCheckoutParameter checkoutParam = new CommerceCheckoutParameter();
         CartModel cart = cartService.getSessionCart();
 
@@ -85,14 +83,9 @@ public class DefaultCustomCart2OrderCreationService implements CustomCart2OrderC
                 addToCartParam.setCart(cart);
                 addToCartParam.setUser(user);
 
-                //cart.setUser(user);
-
                 try {
                     commerceCartService.addToCart(addToCartParam);
                     checkoutParam.setCart(cart);
-
-
-                    //commerceCheckoutService.
                 } catch (Exception e) {
                     throw new RuntimeException("Failed to add product to cart: " + productEntry.getProductCode(), e);
                 }
@@ -102,8 +95,6 @@ public class DefaultCustomCart2OrderCreationService implements CustomCart2OrderC
 
         // 4. Set delivery address (mock address or existing user address)
         AddressModel address = modelService.create(AddressModel.class);
-
-
         address.setFirstname("John");
         address.setLastname("Doe");
         address.setTown("New York");
@@ -116,9 +107,6 @@ public class DefaultCustomCart2OrderCreationService implements CustomCart2OrderC
         commerceCheckoutService.setDeliveryAddress(checkoutParam);
 
         // 5. Set delivery mode (must exist in your system)
-        /*DeliveryModeModel deliveryMode = modelService.create(DeliveryModeModel.class);
-        deliveryMode.setCode("premium-gross"); */// or an existing code in your system
-
         String query = "SELECT {pk} FROM {DeliveryMode} WHERE {code} = ?code";
         FlexibleSearchQuery fsQuery = new FlexibleSearchQuery(query);
         fsQuery.addQueryParameter("code", "premium-gross");
@@ -126,11 +114,7 @@ public class DefaultCustomCart2OrderCreationService implements CustomCart2OrderC
         SearchResult<DeliveryModeModel> result = flexibleSearchService.search(fsQuery);
         DeliveryModeModel deliveryMode = result.getResult().get(0); // handle if empty
 
-        //modelService.save(deliveryMode);
-        //CommerceCheckoutParameter checkoutParamDeliveryMode = new CommerceCheckoutParameter();
-        //checkoutParamDeliveryMode.setDeliveryMode(deliveryMode);
         checkoutParam.setDeliveryMode(deliveryMode);
-        //commerceCheckoutService.setDeliveryMode(checkoutParamDeliveryMode);
         commerceCheckoutService.setDeliveryMode(checkoutParam);
 
         // 6. Set payment info (can be null if using COD or mock)
@@ -138,30 +122,19 @@ public class DefaultCustomCart2OrderCreationService implements CustomCart2OrderC
         paymentInfo.setCode("mock-payment-test1");
         paymentInfo.setUser(user);
         modelService.save(paymentInfo);
-        //CommerceCheckoutParameter checkoutParamPaymentMode = new CommerceCheckoutParameter();
-        //checkoutParamDeliveryMode.setPaymentInfo(checkoutParamPaymentMode.getPaymentInfo());
         checkoutParam.setPaymentInfo(paymentInfo);
         commerceCheckoutService.setPaymentInfo(checkoutParam);
 
         // 7. Place order
-        //CommerceCheckoutParameter checkoutParamFinal = new CommerceCheckoutParameter();
-        //checkoutParamFinal.setCart(cart);
-        //checkoutParamFinal.setEnableHooks(true);
-        //checkoutParamFinal.setSalesApplication(SalesApplication.WEB);
-        //checkoutParam.setCart(cart);
-        //checkoutParam.setEnableHooks(true);
         checkoutParam.setSalesApplication(SalesApplication.WEB);
 
         try{
             CommerceOrderResult commerceOrderResult = commerceCheckoutService.placeOrder(checkoutParam);
             OrderModel order = commerceOrderResult.getOrder();
-            System.out.println("✅ Order placed: " + order.getCode());
+            System.out.println("Order placed: " + order.getCode());
             return order;
         } catch (Exception e) {
             throw new RuntimeException("Failed to place order", e);
         }
-
-
-
     }
 }

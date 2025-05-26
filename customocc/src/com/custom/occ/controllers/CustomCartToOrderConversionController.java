@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
+import java.util.stream.Collectors;
 
 @Controller
 @ApiVersion("v2")
@@ -40,7 +41,7 @@ public class CustomCartToOrderConversionController
     @Secured("ROLE_CLIENT")
     @GetMapping("/hello-cart2order")
     public ResponseEntity<String> sayHelloOrder() {
-        return ResponseEntity.ok("Hello from dummy order placement controller!");
+        return ResponseEntity.ok("Hello from dummy cart2order placement controller!");
     }
 
     @Secured("ROLE_CLIENT")
@@ -48,8 +49,11 @@ public class CustomCartToOrderConversionController
     public ResponseEntity<String> createCustomOrderFromCart(@RequestBody DummyOrderRequestDTO dummyOrderRequestDTO) {
 
         OrderModel customOrder = customcart2orderfacade.createCustomOrderFromCart(dummyOrderRequestDTO.getUserId(), dummyOrderRequestDTO.getProductEntries());
-        eventService.publishEvent(new SubmitOrderEvent(customOrder));
-        return ResponseEntity.ok(customOrder.getCode());
+        String concatenatedProductCodes = dummyOrderRequestDTO.getProductEntries()
+                .stream()
+                .map(DummyOrderRequestDTO.ProductEntry::getProductCode)
+                .collect(Collectors.joining(","));
+        return ResponseEntity.ok("Order placed for products :[" + concatenatedProductCodes + "] in order: "+customOrder.getCode());
     }
 
 }
