@@ -76,5 +76,54 @@
 		</advanced-search:advanced-search>
 	</context>
 
+	<context component="explorer-tree">
+		<explorer-tree:explorer-tree>
+			<explorer-tree:navigation-node id="hmc_DigitalDownloadTracker" merge-mode="APPEND">
+				<explorer-tree:type-node code="DigitalDownloadTracker" id="hmc_DigitalDownloadTrackerNode"/>
+			</explorer-tree:navigation-node>
+		</explorer-tree:explorer-tree>
+	</context>
+
+
+	<context type="DigitalDownloadTracker" component="editorArea">
+		<editorArea:editorArea>
+			<editorArea:tab name="digitaldownloadtracker" >
+				<editorArea:section name="hmc.section.digitaldownloadtracker">
+					<editorArea:attribute qualifier="validUntil"/>
+					<editorArea:attribute qualifier="orderNum"/>
+					<editorArea:attribute qualifier="productCode"/>
+					<editorArea:attribute qualifier="userEmail"/>
+					<editorArea:attribute qualifier="maxDownloads"/>
+					<editorArea:attribute qualifier="downloadCount"/>
+				</editorArea:section>
+			</editorArea:tab>
+		</editorArea:editorArea>
+	</context>
+
+	<context type="DigitalDownloadTracker" component="list-view">
+		<list-view:list-view>
+			<list-view:column qualifier="validUntil"/>
+			<list-view:column qualifier="orderNum"/>
+			<list-view:column qualifier="productCode"/>
+			<list-view:column qualifier="userEmail"/>
+			<list-view:column qualifier="maxDownloads"/>
+			<list-view:column qualifier="downloadCount"/>
+		</list-view:list-view>
+	</context>
+
+	<context type="DigitalDownloadTracker" component="advanced-search">
+		<advanced-search:advanced-search>
+			<advanced-search:field-list>
+				<advanced-search:field name="validUntil"/>
+				<advanced-search:field name="orderNum"/>
+				<advanced-search:field name="productCode"/>
+				<advanced-search:field name="userEmail"/>
+				<advanced-search:field name="maxDownloads"/>
+				<advanced-search:field name="downloadCount"/>
+			</advanced-search:field-list>
+
+		</advanced-search:advanced-search>
+	</context>
+
 
 </config>

@@ -2,6 +2,7 @@ package com.sample.module.core.product;
 
 import com.sample.module.core.dto.CustomerDTO;
 import com.sample.module.core.dto.ProductDTO;
+import com.sample.module.core.model.DigitalDownloadTrackerModel;
 import com.sample.module.core.model.DownloadUrlPropsModel;
 import de.hybris.platform.commercefacades.product.data.ProductData;
 import de.hybris.platform.core.model.product.ProductModel;
@@ -15,4 +16,7 @@ public interface ProductModelService {
     List<ProductData> setExpressDeliveryEligibilityPLP(List<ProductData> productDataList, CustomerDTO customerDTO);
 
     DownloadUrlPropsModel getDownloadUrlPropsModel(String token);
-}
+
+    DigitalDownloadTrackerModel getDigitalDownloadTrackerModel(String orderNum, String code);
+
+    }

@@ -41,21 +41,21 @@ INSERT_UPDATE CatalogVersionSyncJob;code[unique=true];sourceVersion(catalog(id),
 
 
 # --- Digital Product 1: eBook ---
-INSERT_UPDATE Product; code[unique = true]; name[lang = en]; catalogVersion(catalog(id), version); downloadurl; isdigitalproduct; supercategories(code)
-; ebook-001 ; Learn impex in 24 Hours ; digitalProduct:Staged ; https://digitalsource.s3.us-west-2.amazonaws.com/Impex-bkp.txt ; true ; digital-cat
+INSERT_UPDATE Product; code[unique = true]; name[lang = en]; catalogVersion(catalog(id), version); downloadurl; supercategories(code)
+; ebook-001 ; Learn impex in 24 Hours ; digitalProduct:Staged ; https://digitalsource.s3.us-west-2.amazonaws.com/Impex-bkp.txt ; digital-cat
 
 # --- Digital Product 2: Music File ---
-INSERT_UPDATE Product; code[unique = true]; name[lang = en]; catalogVersion(catalog(id), version); downloadurl; isdigitalproduct; supercategories(code)
-; music-001 ; Ambient Soundtrack Vol.1 ; digitalProduct:Staged ; https://digitalsource.s3.us-west-2.amazonaws.com/file_example_MP3_700KB.mp3 ; true ; digital-cat
+INSERT_UPDATE Product; code[unique = true]; name[lang = en]; catalogVersion(catalog(id), version); downloadurl; supercategories(code)
+; music-001 ; Ambient Soundtrack Vol.1 ; digitalProduct:Staged ; https://digitalsource.s3.us-west-2.amazonaws.com/file_example_MP3_700KB.mp3 ; digital-cat
 
-INSERT_UPDATE Product; code[unique = true]; name[lang = en]; catalogVersion(catalog(id), version); downloadurl; isdigitalproduct; supercategories(code)
-; sqlfile-001 ; Sql source ; digitalProduct:Staged ; fsqls-bkp.txt ; true ; digital-cat
+INSERT_UPDATE Product; code[unique = true]; name[lang = en]; catalogVersion(catalog(id), version); downloadurl; supercategories(code)
+; sqlfile-001 ; Sql source ; digitalProduct:Staged ; fsqls-bkp.txt ; digital-cat
 
-INSERT_UPDATE Product; code[unique = true]; name[lang = en]; catalogVersion(catalog(id), version); downloadurl; isdigitalproduct; supercategories(code)
-; music-002 ; Ambient Soundtrack Vol.2 ; digitalProduct:Staged ; file_example_MP3_secured.mp3 ; true ; digital-cat
+INSERT_UPDATE Product; code[unique = true]; name[lang = en]; catalogVersion(catalog(id), version); downloadurl; supercategories(code)
+; music-002 ; Ambient Soundtrack Vol.2 ; digitalProduct:Staged ; file_example_MP3_secured.mp3 ; digital-cat
 
-INSERT_UPDATE Product; code[unique = true]; name[lang = en]; catalogVersion(catalog(id), version); downloadurl; isdigitalproduct; supercategories(code)
-; hybris-qs ; Hybris Questionaire ; digitalProduct:Staged ; C_HYCBA_60_Sample_Questions_CORRECTED_06_23_2016.pdf ; true ; digital-cat
+INSERT_UPDATE Product; code[unique = true]; name[lang = en]; catalogVersion(catalog(id), version); downloadurl; supercategories(code)
+; hybris-qs ; Hybris Questionaire ; digitalProduct:Staged ; C_HYCBA_60_Sample_Questions_CORRECTED_06_23_2016.pdf ; digital-cat
 
 ## ------ Add price -----------
 INSERT_UPDATE PriceRow;productId[unique=true];unit(code[unique=true,default=pieces]);currency(isocode)[unique=true];price;minqtd;unitFactor;net

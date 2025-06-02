@@ -79,7 +79,7 @@ public class DefaultCustomCart2OrderCreationService implements CustomCart2OrderC
                 CommerceCartParameter addToCartParam = new CommerceCartParameter();
                 addToCartParam.setEnableHooks(true);
                 addToCartParam.setProduct(product);
-                addToCartParam.setQuantity(productEntry.getQuantity());
+                addToCartParam.setQuantity(1l);
                 addToCartParam.setCart(cart);
                 addToCartParam.setUser(user);
 

@@ -2,6 +2,7 @@ package com.sample.module.core.product.impl;
 
 import com.sample.module.core.dto.CustomerDTO;
 import com.sample.module.core.dto.ProductDTO;
+import com.sample.module.core.model.DigitalDownloadTrackerModel;
 import com.sample.module.core.model.DownloadUrlPropsModel;
 import com.sample.module.core.product.ProductModelService;
 import com.sample.module.core.product.dao.ProductDao;
@@ -59,6 +60,10 @@ public class DefaultProductModelService implements ProductModelService {
     @Override
     public DownloadUrlPropsModel getDownloadUrlPropsModel(String token) {
         return productDao.getDownloadUrlPropsModel(token);
+    }
+
+    public DigitalDownloadTrackerModel getDigitalDownloadTrackerModel(String orderNum, String code) {
+        return productDao.getDigitalDownloadTrackerModel(orderNum, code);
     }
 
     @Override

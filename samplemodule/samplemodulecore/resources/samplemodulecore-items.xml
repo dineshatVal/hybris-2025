@@ -218,10 +218,10 @@
         <typegroup name="DigitalProductSection">
             <itemtype code="Product" autocreate="false" generate="false">
                 <attributes>
-                    <attribute qualifier="isDigitalProduct" type="java.lang.Boolean">
+                    <!--<attribute qualifier="isDigitalProduct" type="java.lang.Boolean">
                         <modifiers read="true" write="true" search="true" optional="true"/>
                         <persistence type="property"/>
-                    </attribute>
+                    </attribute>-->
                     <attribute qualifier="downloadUrl" type="java.lang.String">
                         <modifiers read="true" write="true" search="true" optional="true"/>
                         <persistence type="property"/>
@@ -257,6 +257,42 @@
                         <persistence type="property"/>
                     </attribute>
                 </attributes>
+            </itemtype>
+
+            <itemtype code="DigitalDownloadTracker" autocreate="true" generate="true">
+                <deployment table="DigitalDownloadTracker" typecode="20006"/>
+                <attributes>
+                    <attribute qualifier="validUntil" type="java.util.Date">
+                        <modifiers read="true" write="true" search="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="orderNum" type="java.lang.String">
+                        <modifiers read="true" write="true" search="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="productCode" type="java.lang.String">
+                        <modifiers read="true" write="true" search="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="userEmail" type="java.lang.String">
+                        <modifiers read="true" write="true" search="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="maxDownloads" type="java.lang.Integer">
+                        <modifiers read="true" write="true" search="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="downloadCount" type="java.lang.Integer">
+                        <modifiers read="true" write="true" search="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+                <indexes>
+                    <index name="DownloadTrackIdx" unique="true">
+                        <key attribute="orderNum" />
+                        <key attribute="productCode" />
+                    </index>
+                </indexes>
             </itemtype>
 
         </typegroup>

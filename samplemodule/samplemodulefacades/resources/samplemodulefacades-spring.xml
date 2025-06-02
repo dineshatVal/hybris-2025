@@ -236,4 +236,8 @@
 	<bean id="customcart2orderfacade" class="com.sample.module.facades.customorder.impl.DefaultCustomCart2OrderCreationFacade"/>
 	<!-- Custom Cart2Order Facade END -->
 
+	<bean id="downloaddatapopulator" class="com.sample.module.facades.populators.DigitalDownloadDataToDTOPopulator"/>
+	<bean id="customorderdatapopulator" class="com.sample.module.facades.populators.OrderDataToDTOPopulator"/>
+
+
 </beans>

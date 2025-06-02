@@ -5,6 +5,7 @@ package com.custom.occ.controllers;
 
 import com.custom.occ.dto.CustomProductWsDTO;
 import com.sample.module.facades.DigitalFacade;
+import com.sample.module.facades.dto.ResponseDTO;
 import de.hybris.platform.commerceservices.request.mapping.annotation.ApiVersion;
 import io.swagger.annotations.Api;
 import org.slf4j.Logger;
@@ -68,6 +69,13 @@ public class DigitalController
     public ResponseEntity<String> getSecuredDownloadAccess(@RequestParam String orderNum, @RequestParam String code, @RequestParam String email) throws Exception {
         String downloadLink = digitalFacade.getSecuredDownloadAccess(orderNum,code,email);
         return ResponseEntity.ok(downloadLink);
+    }
+
+    @Secured("ROLE_CLIENT")
+    @GetMapping("/getSecuredDownloadAccessV1")
+    public ResponseEntity<ResponseDTO> getSecuredDownloadAccessV1(@RequestParam String orderNum, @RequestParam String code, @RequestParam String email) throws Exception {
+        ResponseDTO responseDTO = digitalFacade.getSecuredDownloadAccessV1(orderNum,code,email);
+        return ResponseEntity.ok(responseDTO);
     }
 
 

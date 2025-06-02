@@ -15,9 +15,9 @@ public class UpdateProductFlagsPopulator implements Populator<CustomProductWsDTO
             target.setExpressDeliveryEligibility(source.getExpressDeliveryEligibility());
         }
 
-        if(Objects.nonNull(source.getIsDigitalProduct())){
+        /*if(Objects.nonNull(source.getIsDigitalProduct())){
             target.setIsDigitalProduct(source.getIsDigitalProduct());
-        }
+        }*/
 
         if(source.getDownloadUrl() != null){
             target.setDownloadUrl(source.getDownloadUrl());

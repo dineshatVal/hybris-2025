@@ -28,7 +28,7 @@
 		<property name="description" type="String"/>
 		<property name="expressDeliveryEligibility" type="Boolean"/>
 
-		<property name="isDigitalProduct" type="Boolean"/>
+		<!--<property name="isDigitalProduct" type="Boolean"/>-->
 		<property name="downloadUrl" type="String"/>
 	</bean>
 
