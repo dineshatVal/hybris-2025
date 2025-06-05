@@ -207,7 +207,7 @@
         <itemtype code="Customer" autocreate="false" generate="false">
             <attributes>
                 <attribute qualifier="customCustomerLoc" type="CustomCustomerLoc">
-                    <modifiers read="true" write="true" search="true" optional="false" />
+                    <modifiers read="true" write="true" search="true" optional="true" />
                     <persistence type="property"/>
                 </attribute>
             </attributes>
