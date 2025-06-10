@@ -7,11 +7,8 @@ import com.sample.module.core.dto.DummyOrderRequestDTO;
 import com.sample.module.facades.customorder.CustomCart2OrderCreationFacade;
 import com.sample.module.facades.dto.ResponseDTO;
 import de.hybris.platform.commerceservices.request.mapping.annotation.ApiVersion;
-import de.hybris.platform.servicelayer.event.EventService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -25,11 +22,6 @@ import javax.annotation.Resource;
 @RequestMapping(value = "/{baseSiteId}")
 public class CustomCartToOrderConversionController
 {
-    private static final Logger LOG = LoggerFactory.getLogger(CustomCartToOrderConversionController.class);
-
-    @Resource(name = "eventService")
-    private EventService eventService;
-
     @Resource(name = "customcart2orderfacade")
     private CustomCart2OrderCreationFacade customcart2orderfacade;
 
